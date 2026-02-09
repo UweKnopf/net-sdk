@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualBasic;
 using net_sdk.src.models;
 using RestSharp;
@@ -21,16 +22,23 @@ public class TCGDex: ITCGDex, IDisposable {
 
     public async Task<Card> fetchCard(string CardID)
     {
-        var response = await _client.GetAsync<Card>(
-            "/cards/{CardID}",
-            new { CardID }
-        );
-        return response!;
+        var response = await fetch<Card>(CardID);
+        return response;
     }
 
     public void Dispose() {
         _client?.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    private async Task<T> fetch<T>(string fetchParam)
+    {
+        var response = await _client.GetAsync<T>(
+            "/cards/{CardID}",
+            new { fetchParam }
+        );
+        //null handling?
+        return response!;
     }
 
 
