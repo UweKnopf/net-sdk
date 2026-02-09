@@ -1,6 +1,3 @@
 namespace net_sdk.src.models.subs;
 
-public enum CardWeakRes
-{
-
-}
+public record class CardWeakRes(string type, string? value);
