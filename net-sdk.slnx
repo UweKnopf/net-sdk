@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="net-sdk/net-sdk.csproj" />
+  <Project Path="net-sdkTest/net-sdkTest.csproj" />
 </Solution>
