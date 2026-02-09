@@ -15,14 +15,14 @@ public class TCGDex: ITCGDex {
 
     public TCGDex(string language)
     {
-        var options = new RestClientOptions("https://api.tcgdex.net/v2");
+        var options = new RestClientOptions("https://api.tcgdex.net/v2/{language}");
         _client = new RestClient(options);
     }
 
     public async Task<Card> fetchCard(string CardID)
     {
         var response = await _client.GetAsync<Card>(
-            "/en/cards/{CardID}",
+            "/cards/{CardID}",
             new { CardID }
         );
         return response!;
