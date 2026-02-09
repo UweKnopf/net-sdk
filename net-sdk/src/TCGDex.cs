@@ -10,7 +10,7 @@ public interface ITCGDex
     Task<Card> fetchCard(string CardID);
 }
 
-public class TCGDex: ITCGDex {
+public class TCGDex: ITCGDex, IDisposable {
     readonly RestClient _client;
 
     public TCGDex(string language)
