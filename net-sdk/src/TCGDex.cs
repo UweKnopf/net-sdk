@@ -18,6 +18,7 @@ public class TCGDex: ITCGDex, IDisposable {
     {
         var options = new RestClientOptions("https://api.tcgdex.net/v2/{language}");
         _client = new RestClient(options);
+        _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
 
     public Task<Card> fetchCard(string CardID)
@@ -37,6 +38,8 @@ public class TCGDex: ITCGDex, IDisposable {
             "/cards/{CardID}",
             new { fetchParam }
         );
+
+        
         //null handling?
         return response!;
     }
