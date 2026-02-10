@@ -12,8 +12,7 @@ public sealed class Test1
     {
         TCGDex sdk = new TCGDex(language: "en");
         var a = await sdk.fetchCard("swsh3-136");
-        //a.ToString;
-        Console.Write(a.name);
+        Assert.AreEqual("Furret", a.name);
     }
 
     [TestMethod]
