@@ -13,6 +13,10 @@ public sealed class Test1
         TCGDex sdk = new TCGDex(language: "en");
         var a = await sdk.fetchCard("swsh3-136");
         Assert.AreEqual("Furret", a.name);
+
+        //Console.WriteLine(a.getImageUrl(Quality.low, Extension.jpg));
+        
+        Assert.AreEqual("https://assets.tcgdex.net/en/swsh/swsh3/136/low.jpg", a.getImageUrl(Quality.low, Extension.jpg));
     }
 
     [TestMethod]
