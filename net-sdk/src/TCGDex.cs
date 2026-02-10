@@ -20,9 +20,9 @@ public class TCGDex: ITCGDex, IDisposable {
         _client = new RestClient(options);
     }
 
-    public async Task<Card> fetchCard(string CardID)
+    public Task<Card> fetchCard(string CardID)
     {
-        var response = await fetch<Card>(CardID);
+        var response = fetch<Card>(CardID);
         return response;
     }
 
