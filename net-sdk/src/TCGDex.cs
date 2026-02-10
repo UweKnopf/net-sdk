@@ -16,15 +16,15 @@ public class TCGDex: ITCGDex, IDisposable {
 
     public TCGDex(string language)
     {
-        var options = new RestClientOptions("https://api.tcgdex.net/v2/{language}");
+        var options = new RestClientOptions("https://api.tcgdex.net/v2/" + language);
         _client = new RestClient(options);
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
 
-    public Task<Card> fetchCard(string CardID)
+    public async Task<Card> fetchCard(string CardID)
     {
-        var response = fetch<Card>(CardID);
-        return response;
+        var response = await fetch<Card>(CardID);
+        return response!;
     }
 
     public void Dispose() {
@@ -35,7 +35,7 @@ public class TCGDex: ITCGDex, IDisposable {
     private async Task<T> fetch<T>(string fetchParam)
     {
         var response = await _client.GetAsync<T>(
-            "/cards/{CardID}",
+            "/cards/{fetchParam}",
             new { fetchParam }
         );
 
