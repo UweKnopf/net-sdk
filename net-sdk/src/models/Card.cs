@@ -32,4 +32,10 @@ public record class Card(
     string? energyType,
     string? regulationMark,
     Legal legal
-    );
+    )
+{
+    public string getImageUrl(Quality quality, Extension extension)
+    {
+        return $"{this.image}/{quality}.{extension}";
+    }
+}
