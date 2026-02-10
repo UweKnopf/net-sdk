@@ -2,7 +2,8 @@ namespace net_sdk.src;
 
 public enum Extension
 {
-    PNG,
-    JPG,
-    WEPD,
+    //needs to be lowercase because costume enum string values are not possible
+    png,
+    jpg,
+    wepd,
 }
