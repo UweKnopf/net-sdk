@@ -16,7 +16,7 @@ public class TCGDex: ITCGDex, IDisposable {
 
     public TCGDex(string language)
     {
-        var options = new RestClientOptions("https://api.tcgdex.net/v2/" + language);
+        var options = new RestClientOptions($"https://api.tcgdex.net/v2/{language}");
         _client = new RestClient(options);
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
@@ -35,7 +35,7 @@ public class TCGDex: ITCGDex, IDisposable {
     private async Task<T> fetch<T>(string fetchParam)
     {
         var response = await _client.GetAsync<T>(
-            "/cards/{fetchParam}",
+            $"/cards/{fetchParam}",
             new { fetchParam }
         );
 
