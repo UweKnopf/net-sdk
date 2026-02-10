@@ -15,8 +15,13 @@ public sealed class Test1
         Assert.AreEqual("Furret", a.name);
 
         //Console.WriteLine(a.getImageUrl(Quality.low, Extension.jpg));
-        
+
         Assert.AreEqual("https://assets.tcgdex.net/en/swsh/swsh3/136/low.jpg", a.getImageUrl(Quality.low, Extension.jpg));
+
+        var img = a.getImage(Quality.low, Extension.jpg);
+        Assert.IsNotNull(img);
+
+        //File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "poster-got.jpg"), img);
     }
 
     [TestMethod]
