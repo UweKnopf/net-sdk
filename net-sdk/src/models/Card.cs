@@ -1,4 +1,5 @@
 using net_sdk.src.models.subs;
+using RestSharp;
 
 namespace net_sdk.src.models;
 
@@ -37,5 +38,14 @@ public record class Card(
     public string getImageUrl(Quality quality, Extension extension)
     {
         return $"{this.image}/{quality}.{extension}";
+    }
+
+    public byte[]? getImage(Quality quality, Extension extension)
+    {
+        //probably wasteful to start another client here but no idea how to use the maine one in TCGDex without exposing the _client to the user
+        RestClient restClient = new RestClient();
+        restClient.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
+        var fileBytes = restClient.DownloadData(new RestRequest(getImageUrl(quality, extension), Method.Get));
+        return fileBytes;
     }
 }
