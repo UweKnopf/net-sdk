@@ -1,6 +1,6 @@
-#### .net SDK for TCGDex
+# .net SDK for TCGDex
 
-# This repo is under **ACTIVE DEVELOPMENT**. Breaking changes and missing functionality are expected.
+## This repo is under **ACTIVE DEVELOPMENT**. Breaking changes and missing functionality are expected.
 
 This is an unofficial .net sdk for the TCGDex api. It is heavily inspired by the [official sdks](https://tcgdex.dev/sdks).
 
