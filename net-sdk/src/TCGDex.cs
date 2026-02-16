@@ -26,24 +26,6 @@ public class TCGDex: ITCGDex, IDisposable{
 
         
     }
-
-    public async Task<Card> fetchCard(string CardID)
-    {
-        var response = await fetch<Card>(CardID);
-        return response;
-    }
-
-    public async Task<CardResume> fetchCardResume(string CardID)
-    {
-        var response = await fetch<CardResume>(CardID);
-        return response;
-    }
-
-    public void Dispose() {
-        _client?.Dispose();
-        GC.SuppressFinalize(this);
-    }
-
     private async Task<T> fetch<T>(string fetchParam) where T : Model
     {
         var response = await _client.GetAsync<T>(
@@ -61,6 +43,24 @@ public class TCGDex: ITCGDex, IDisposable{
         var fileBytes = this._client.DownloadData(new RestRequest(imageUrl, Method.Get));
         return fileBytes;
     }
+    public async Task<Card> fetchCard(string CardID)
+    {
+        var response = await fetch<Card>(CardID);
+        return response;
+    }
+
+    public async Task<CardResume> fetchCardResume(string CardID)
+    {
+        var response = await fetch<CardResume>(CardID);
+        return response;
+    }
+
+    public void Dispose() {
+        _client?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    
 
     public Task<Set> fetchSet(string SetID)
     {
