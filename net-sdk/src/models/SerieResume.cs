@@ -2,7 +2,7 @@ using net_sdk.src.internal_classes;
 
 namespace net_sdk.src.models;
 
-public abstract record class SerieResume(
+public record class SerieResume(
     string id,
     string name,
     string? logo
