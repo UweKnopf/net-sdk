@@ -63,13 +63,15 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    public Task<Set> fetchSet(string SetID)
+    public async Task<Set> fetchSet(string SetID)
     {
-        throw new NotImplementedException();
+        var response = await fetch<Set>(SetID);
+        return response;
     }
 
-    public Task<Serie> fetchSeries(string SerieID)
+    public async Task<Serie> fetchSeries(string SerieID)
     {
-        throw new NotImplementedException();
+        var response = await fetch<Serie>(SerieID);
+        return response;
     }
 }

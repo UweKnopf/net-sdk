@@ -1,6 +1,10 @@
+using net_sdk.src.internal_classes;
+
 namespace net_sdk.src.models;
 
-public record class SetResume
+public record class SetResume(
+
+):Model()
 {
 
 }
