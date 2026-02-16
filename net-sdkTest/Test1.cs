@@ -50,9 +50,21 @@ public sealed class Test1
     {
         TCGDex sdk = new TCGDex(language: "en");
         //Basic fetch tests not throwing exceptions and returning something
-        Assert.IsNotNull(sdk.fetchCard("swsh3-136"));
-        Assert.IsNotNull(sdk.fetchCardResume("swsh3-136"));
-        Assert.IsNotNull(sdk.fetchSet("swsh3"));
-        Assert.IsNotNull(sdk.fetchSeries("swsh"));
+        var card = await sdk.fetchCard("swsh3-136");
+        var cardResume = await sdk.fetchCardResume("swsh3-136");
+        var set = await sdk.fetchSet("swsh3");
+        var serie = await sdk.fetchSeries("swsh");
+        Assert.IsNotNull(card);
+        Assert.IsNotNull(cardResume);
+        Assert.IsNotNull(set);
+        Assert.IsNotNull(serie);
+
+        //Console.WriteLine(set.ToString());
+
+        Assert.IsNotNull(card.getImage(Quality.low, Extension.jpg));
+        Assert.IsNotNull(cardResume.getFullCard());
+        Assert.IsNotNull(set.getLogo(Extension.jpg));
+        Assert.IsNotNull(set.getSymbol(Extension.jpg));
+        Assert.IsNotNull(serie.getLogo(Extension.jpg));
     }
 }

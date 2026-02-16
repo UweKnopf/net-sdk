@@ -3,8 +3,24 @@ using net_sdk.src.internal_classes;
 namespace net_sdk.src.models;
 
 public record class Serie(
-
-):Model()
+    List<SetResume> sets,
+    string id,
+    string name,
+    string? logo
+    
+) : Model()
 {
+    public string? getLogoUrl(Extension extension)
+    {
+        if (logo == null) return null;
+        return $"{this.logo}.{extension}";
+    }
 
+    public byte[]? getLogo(Extension extension)
+    {
+        var logoUrl = getLogoUrl(extension);
+        if (logoUrl == null) return null;
+        return tCGDex.getImage(logoUrl);
+        
+    }
 }

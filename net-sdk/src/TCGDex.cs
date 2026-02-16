@@ -30,7 +30,7 @@ public class TCGDex: ITCGDex, IDisposable{
     private async Task<T> fetch<T>(string fetchParam) where T : Model
     {
         var response = await _client.GetAsync<T>(
-            $"/cards/{fetchParam}",
+            $"{fetchParam}",
             new { fetchParam }
         );
         //var a =
@@ -41,6 +41,7 @@ public class TCGDex: ITCGDex, IDisposable{
 
     public byte[]? getImage(string imageUrl)
     {
+        //possible bug with relative vs absolute imageUrl path
         var fileBytes = this._client.DownloadData(new RestRequest(imageUrl, Method.Get));
         return fileBytes;
     }
@@ -53,25 +54,25 @@ public class TCGDex: ITCGDex, IDisposable{
 
     public async Task<Card> fetchCard(string CardID)
     {
-        var response = await fetch<Card>(CardID);
+        var response = await fetch<Card>("/cards/" + CardID);
         return response;
     }
 
     public async Task<CardResume> fetchCardResume(string CardID)
     {
-        var response = await fetch<CardResume>(CardID);
+        var response = await fetch<CardResume>("/cards/" + CardID);
         return response;
     }
 
     public async Task<Set> fetchSet(string SetID)
     {
-        var response = await fetch<Set>(SetID);
+        var response = await fetch<Set>("/sets/" + SetID);
         return response;
     }
 
     public async Task<Serie> fetchSeries(string SerieID)
     {
-        var response = await fetch<Serie>(SerieID);
+        var response = await fetch<Serie>("/series/" + SerieID);
         return response;
     }
 }
