@@ -22,6 +22,13 @@ public sealed class Test1
         Assert.IsNotNull(img);
 
         //File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "poster-got.jpg"), img);
+
+        var b = await sdk.fetchCardResume("swsh3-136");
+        Console.WriteLine(b.name);
+
+        var c = await b.getFullCard();
+        Assert.AreEqual(expected: a.ToString(), actual: c!.ToString());
+
     }
 
     [TestMethod]

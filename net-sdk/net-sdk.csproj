@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="src/" />
+    <Folder Include="src/internal/" />
     <Folder Include="src/models/" />
     <Folder Include="src/models/subs/" />
   </ItemGroup>
