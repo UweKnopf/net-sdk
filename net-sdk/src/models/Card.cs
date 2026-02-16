@@ -1,3 +1,4 @@
+using net_sdk.src.internal_classes;
 using net_sdk.src.models.subs;
 using RestSharp;
 
@@ -33,7 +34,7 @@ public record class Card(
     string? energyType,
     string? regulationMark,
     Legal legal
-    )
+    ):Model()
 {
     public string getImageUrl(Quality quality, Extension extension)
     {

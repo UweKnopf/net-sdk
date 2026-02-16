@@ -42,15 +42,15 @@ public class TCGDex: ITCGDex, IDisposable{
         GC.SuppressFinalize(this);
     }
 
-    private async Task<Model> fetch<Model>(string fetchParam)
+    private async Task<T> fetch<T>(string fetchParam) where T : Model
     {
-        var response = await _client.GetAsync<Model>(
+        var response = await _client.GetAsync<T>(
             $"/cards/{fetchParam}",
             new { fetchParam }
         );
         //var a =
         //null handling?
-        response!;
+        response!.tCGDex = this;
         return response!;
     }
 

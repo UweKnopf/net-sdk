@@ -7,6 +7,8 @@ public abstract record class Model
 
     public TCGDex tCGDex;
 
+    
+
     public override string ToString()
     {
 
