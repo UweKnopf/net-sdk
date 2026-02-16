@@ -11,6 +11,8 @@ public interface ITCGDex
 {
     Task<Card> fetchCard(string CardID);
     Task<CardResume> fetchCardResume(string CardId);
+    Task<Set> fetchSet(string SetID);
+    Task<Serie> fetchSeries(string SerieID);
 }
 
 public class TCGDex: ITCGDex, IDisposable{
@@ -60,6 +62,13 @@ public class TCGDex: ITCGDex, IDisposable{
         return fileBytes;
     }
 
+    public Task<Set> fetchSet(string SetID)
+    {
+        throw new NotImplementedException();
+    }
 
-    
+    public Task<Serie> fetchSeries(string SerieID)
+    {
+        throw new NotImplementedException();
+    }
 }
