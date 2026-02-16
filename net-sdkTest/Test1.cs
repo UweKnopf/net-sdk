@@ -44,4 +44,15 @@ public sealed class Test1
 
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
+
+    [TestMethod]
+    public async Task EndStateTest()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        //Basic fetch tests not throwing exceptions and returning something
+        Assert.IsNotNull(sdk.fetchCard("swsh3-136"));
+        Assert.IsNotNull(sdk.fetchCardResume("swsh3-136"));
+        Assert.IsNotNull(sdk.fetchSet("swsh3"));
+        Assert.IsNotNull(sdk.fetchSeries("swsh"));
+    }
 }
