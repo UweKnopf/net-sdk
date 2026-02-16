@@ -54,6 +54,12 @@ public class TCGDex: ITCGDex, IDisposable{
         return response!;
     }
 
+    public byte[]? getImage(string imageUrl)
+    {
+        var fileBytes = this._client.DownloadData(new RestRequest(imageUrl, Method.Get));
+        return fileBytes;
+    }
+
 
     
 }
