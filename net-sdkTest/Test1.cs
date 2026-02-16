@@ -12,7 +12,7 @@ public sealed class Test1
     {
         TCGDex sdk = new TCGDex(language: "en");
         var a = await sdk.fetchCard("swsh3-136");
-        Assert.AreEqual("Pokomon", a.category);
+        Assert.AreEqual("Pokemon", a.category);
         Assert.AreEqual("tetsuya koizumi", a.illustrator);
         Assert.AreEqual(110, a.hp);
         Assert.AreEqual("It makes a nest to suit its long and skinny body. The nest is impossible for other Pokémon to enter.", a.description);
