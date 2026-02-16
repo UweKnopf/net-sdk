@@ -9,9 +9,9 @@ public abstract record class Model
 
     
 
+    /*
     public override string ToString()
     {
-
         return base.ToString();
     }
 
@@ -19,6 +19,7 @@ public abstract record class Model
         tCGDex = tCGDex;
         return model;
     }
+    */
     
 
     
