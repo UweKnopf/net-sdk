@@ -34,7 +34,7 @@ public class TCGDex: ITCGDex, IDisposable{
     public async Task<CardResume> fetchCardResume(string CardID)
     {
         var response = await fetch<CardResume>(CardID);
-        return response!;
+        return response;
     }
 
     public void Dispose() {
