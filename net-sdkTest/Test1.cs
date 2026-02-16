@@ -12,7 +12,10 @@ public sealed class Test1
     {
         TCGDex sdk = new TCGDex(language: "en");
         var a = await sdk.fetchCard("swsh3-136");
-        Assert.AreEqual("Furret", a.name);
+        Assert.AreEqual("Pokomon", a.category);
+        Assert.AreEqual("tetsuya koizumi", a.illustrator);
+        Assert.AreEqual(110, a.hp);
+        Assert.AreEqual("It makes a nest to suit its long and skinny body. The nest is impossible for other Pokémon to enter.", a.description);
 
         //Console.WriteLine(a.getImageUrl(Quality.low, Extension.jpg));
 
@@ -24,7 +27,7 @@ public sealed class Test1
         //File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "poster-got.jpg"), img);
 
         var b = await sdk.fetchCardResume("swsh3-136");
-        Console.WriteLine(b.name);
+        //Console.WriteLine(a.ToString());
 
         var c = await b.getFullCard();
         Assert.AreEqual(expected: a.ToString(), actual: c!.ToString());
