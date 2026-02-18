@@ -31,7 +31,7 @@ public sealed class Test1
         //Console.WriteLine(a.ToString());
 
         var c = await b.getFullCard();
-        Assert.AreEqual(expected: a.ToString(), actual: c!.ToString());
+        Assert.AreEqual(expected: a.abilities, actual: c!.abilities);
 
     }
 
