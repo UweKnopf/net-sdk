@@ -66,5 +66,10 @@ public sealed class Test1
         Assert.IsNotNull(set.getLogo(Extension.jpg));
         Assert.IsNotNull(set.getSymbol(Extension.jpg));
         Assert.IsNotNull(serie.getLogo(Extension.jpg));
+
+        var all_cards = await sdk.fetchCards();
+        Console.WriteLine(all_cards.ToString());
+        Console.WriteLine(all_cards.cards.Count);
+        Assert.IsNotNull(all_cards);
     }
 }
