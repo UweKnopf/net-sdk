@@ -46,22 +46,22 @@ public class TCGDex: ITCGDex, IDisposable{
         return response!;
     }
 
-    private async Task<T> fetchList<T>(string fetchParam) where T : Model
+    private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
     {
-        var response = await _client.GetAsync<T>(
-            $"{fetchParam}",
-            new { fetchParam }
+        var a = fetchParam; //passing fetchParam directly dosnt work but this does????
+
+        var response = await _client.GetAsync<List<T>>(
+            a,
+            new { a }
         );
-        //var a =
-        //null handling?
-        //worst code ever
-        /*
+
+        //this looks horrid but I mean it works so its fine??
         foreach (var card in response!)
         {
             card.tCGDex = this;
         }
-        */
-        return response!;
+        
+        return response;
     }
 
     public byte[]? getImage(string imageUrl)
@@ -76,9 +76,9 @@ public class TCGDex: ITCGDex, IDisposable{
         GC.SuppressFinalize(this);
     }
 
-    public async Task<CardResumeList?> fetchCards()
+    public async Task<List<CardResume>?> fetchCards()
     {
-        var response = await fetchList<CardResumeList>("/cards");
+        var response = await fetchList<CardResume>("/cards");
         return response;
     }
 
