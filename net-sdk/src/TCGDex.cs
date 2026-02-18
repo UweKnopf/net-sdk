@@ -23,8 +23,6 @@ public class TCGDex: ITCGDex, IDisposable{
         var options = new RestClientOptions($"https://api.tcgdex.net/v2/{language}");
         _client = new RestClient(options);
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
-
-        
     }
 
     private async Task<T> fetch<T>(string fetchParam) where T : Model
@@ -33,10 +31,27 @@ public class TCGDex: ITCGDex, IDisposable{
             $"{fetchParam}",
             new { fetchParam }
         );
-        //var a =
         //null handling?
         response!.tCGDex = this;
-        return response!;
+        return response;
+    }
+
+    private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
+    {
+        var a = fetchParam; //passing fetchParam directly dosnt work but this does????
+
+        var response = await _client.GetAsync<List<T>>(
+            a,
+            new { a }
+        );
+
+        //this looks horrid but I mean it works so its fine??
+        foreach (var card in response!)
+        {
+            card.tCGDex = this;
+        }
+        
+        return response;
     }
 
     public byte[]? getImage(string imageUrl)
@@ -49,6 +64,12 @@ public class TCGDex: ITCGDex, IDisposable{
     public void Dispose() {
         _client?.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    public async Task<List<CardResume>?> fetchCards()
+    {
+        var response = await fetchList<CardResume>("/cards");
+        return response;
     }
 
 

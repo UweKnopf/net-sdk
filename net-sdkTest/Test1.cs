@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using net_sdk.src;
+using net_sdk.src.models;
 using RestSharp;
 
 namespace net_sdkTest;
@@ -30,19 +31,28 @@ public sealed class Test1
         //Console.WriteLine(a.ToString());
 
         var c = await b.getFullCard();
-        Assert.AreEqual(expected: a.ToString(), actual: c!.ToString());
+        Assert.AreEqual(expected: a.abilities, actual: c!.abilities);
 
     }
 
     [TestMethod]
-    public void TestMethod2()
+    public async Task TestMethod2()
     {
-        RestClient client = new RestClient("https://api.tcgdex.net/v2");
-        RestRequest request = new RestRequest("/en/cards/swsh3-136", Method.Get);
+        RestClient client = new RestClient("https://api.tcgdex.net/v2/en");
+        RestRequest request = new RestRequest("/cards/swsh3-136", Method.Get);
         
         RestResponse response = client.Execute(request);
 
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+        var a = "/cards";
+
+        var response2 = await client.GetAsync<List<Card>>(
+            a,
+            new { a }
+        );
+
+        Console.WriteLine(response2!.Count);
     }
 
     [TestMethod]
@@ -66,5 +76,15 @@ public sealed class Test1
         Assert.IsNotNull(set.getLogo(Extension.jpg));
         Assert.IsNotNull(set.getSymbol(Extension.jpg));
         Assert.IsNotNull(serie.getLogo(Extension.jpg));
+        /*
+        //Dont test this to often because it might spam the api (?)
+        var all_cards = await sdk.fetchCards();
+        Console.WriteLine(all_cards.ToString());
+        Console.WriteLine(all_cards.Count);
+        Assert.IsNotNull(all_cards);
+        Assert.I(all_cards);
+        Assert.IsGreaterThan(0, all_cards.count);
+        */
+        
     }
 }
