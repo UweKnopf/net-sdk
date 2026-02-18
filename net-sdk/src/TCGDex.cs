@@ -33,7 +33,7 @@ public class TCGDex: ITCGDex, IDisposable{
         );
         //null handling?
         response!.tCGDex = this;
-        return response!;
+        return response;
     }
 
     private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
