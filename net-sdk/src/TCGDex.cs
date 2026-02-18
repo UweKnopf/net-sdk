@@ -7,6 +7,13 @@ using RestSharp;
 
 namespace net_sdk.src;
 
+public record class CardResumeList(
+    List<CardResume> cards
+) : Model() {
+    
+}
+
+
 public interface ITCGDex
 {
     Task<Card> fetchCard(string CardID);
@@ -39,6 +46,24 @@ public class TCGDex: ITCGDex, IDisposable{
         return response!;
     }
 
+    private async Task<T> fetchList<T>(string fetchParam) where T : Model
+    {
+        var response = await _client.GetAsync<T>(
+            $"{fetchParam}",
+            new { fetchParam }
+        );
+        //var a =
+        //null handling?
+        //worst code ever
+        /*
+        foreach (var card in response!)
+        {
+            card.tCGDex = this;
+        }
+        */
+        return response!;
+    }
+
     public byte[]? getImage(string imageUrl)
     {
         //possible bug with relative vs absolute imageUrl path
@@ -49,6 +74,12 @@ public class TCGDex: ITCGDex, IDisposable{
     public void Dispose() {
         _client?.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    public async Task<CardResumeList?> fetchCards()
+    {
+        var response = await fetchList<CardResumeList>("/cards");
+        return response;
     }
 
 
