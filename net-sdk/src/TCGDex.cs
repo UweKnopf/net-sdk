@@ -98,6 +98,12 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
+    public async Task<List<SetResume>> fetchSets(params Query[] queries)
+    {
+        var response = await fetchList<SetResume>("/sets", queries);
+        return response;
+    }
+
     public async Task<Serie> fetchSeries(string SerieID)
     {
         var response = await fetch<Serie>("/series/" + SerieID);
