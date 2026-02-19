@@ -34,10 +34,14 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
+    private async Task<List<T>> fetchList<T>(string fetchParam, string queryParameter, string queryValue) where T : Model
     {
         //var a = fetchParam; //passing fetchParam directly dosnt work but this does????
         var req = new RestRequest(fetchParam);
+        if (!string.IsNullOrEmpty(queryParameter) | !string.IsNullOrEmpty(queryValue)!)
+        {
+            req.AddQueryParameter(queryParameter, queryValue);
+        }
         var response = await _client.GetAsync<List<T>>(req);
 
         //this looks horrid but I mean it works so its fine??
@@ -61,9 +65,9 @@ public class TCGDex: ITCGDex, IDisposable{
         GC.SuppressFinalize(this);
     }
 
-    public async Task<List<CardResume>?> fetchCards()
+    public async Task<List<CardResume>?> fetchCards(string queryParameter = "", string queryValue = "")
     {
-        var response = await fetchList<CardResume>("/cards");
+        var response = await fetchList<CardResume>("/cards", queryParameter, queryValue);
         return response;
     }
 
