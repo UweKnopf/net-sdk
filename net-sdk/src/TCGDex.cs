@@ -61,6 +61,14 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
+    private async Task<List<T>?> fetchSimpleList<T>(string fetchParam)
+    {
+        var req = new RestRequest(fetchParam);
+        var response = await _client.GetAsync<List<T>>(req);
+        
+        return response;
+    }
+
     public byte[]? getImage(string imageUrl)
     {
         //possible bug with relative vs absolute imageUrl path
@@ -116,5 +124,14 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
+    //endpoints for Listing purposes
+
+    public async Task<List<string>?> fetchTypes()
+    {
+        var response = await fetchSimpleList<string>("/types");
+        return response;
+    }
+
+    
     
 }

@@ -76,6 +76,15 @@ public sealed class Test1
     }
 
     [TestMethod]
+    public async Task TestOtherEndpoints()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        var a = await sdk.fetchTypes();
+        Console.WriteLine("Types: " + a!.Count);
+
+    }
+
+    [TestMethod]
     public async Task EndStateTest()
     {
         TCGDex sdk = new TCGDex(language: "en");
