@@ -12,8 +12,12 @@ public interface ITCGDex
     Task<Card> fetchCard(string CardID);
     Task<CardResume> fetchCardResume(string CardId);
     Task<Set> fetchSet(string SetID);
-    Task<Serie> fetchSeries(string SerieID);
+    Task<Serie> fetchSerie(string SerieID);
 }
+
+//not great ergonomics; maybe make caller supply enum based on T
+public record class Query(string queryParameter, string queryValue);
+
 
 public class TCGDex: ITCGDex, IDisposable{
     readonly RestClient _client;
@@ -27,29 +31,40 @@ public class TCGDex: ITCGDex, IDisposable{
 
     private async Task<T> fetch<T>(string fetchParam) where T : Model
     {
-        var response = await _client.GetAsync<T>(
-            $"{fetchParam}",
-            new { fetchParam }
-        );
+        var req = new RestRequest(fetchParam);
+        var response = await _client.GetAsync<T>(req);
         //null handling?
         response!.tCGDex = this;
         return response;
     }
 
-    private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
+    private async Task<List<T>> fetchList<T>(string fetchParam, params Query[] querys) where T : Model
     {
-        var a = fetchParam; //passing fetchParam directly dosnt work but this does????
-
-        var response = await _client.GetAsync<List<T>>(
-            a,
-            new { a }
-        );
+        //var a = fetchParam; //passing fetchParam directly dosnt work but this does????
+        var req = new RestRequest(fetchParam);
+        foreach (var query in querys)
+        {
+            if (!string.IsNullOrEmpty(query.queryParameter) | !string.IsNullOrEmpty(query.queryValue)!)
+            {
+                req.AddQueryParameter(query.queryParameter, query.queryValue);
+            }
+        }
+        
+        var response = await _client.GetAsync<List<T>>(req);
 
         //this looks horrid but I mean it works so its fine??
         foreach (var card in response!)
         {
             card.tCGDex = this;
         }
+        
+        return response;
+    }
+
+    private async Task<List<T>?> fetchSimpleList<T>(string fetchParam)
+    {
+        var req = new RestRequest(fetchParam);
+        var response = await _client.GetAsync<List<T>>(req);
         
         return response;
     }
@@ -66,9 +81,9 @@ public class TCGDex: ITCGDex, IDisposable{
         GC.SuppressFinalize(this);
     }
 
-    public async Task<List<CardResume>?> fetchCards()
+    public async Task<List<CardResume>?> fetchCards(params Query[] queries)
     {
-        var response = await fetchList<CardResume>("/cards");
+        var response = await fetchList<CardResume>("/cards", queries);
         return response;
     }
 
@@ -91,9 +106,103 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    public async Task<Serie> fetchSeries(string SerieID)
+    public async Task<List<SetResume>> fetchSets(params Query[] queries)
+    {
+        var response = await fetchList<SetResume>("/sets", queries);
+        return response;
+    }
+
+    public async Task<Serie> fetchSerie(string SerieID)
     {
         var response = await fetch<Serie>("/series/" + SerieID);
         return response;
     }
+
+    public async Task<List<Serie>> fetchSeries(params Query[] queries)
+    {
+        var response = await fetchList<Serie>("/series", queries);
+        return response;
+    }
+
+    //endpoints for Listing purposes    
+    public async Task<List<string>?> fetchTypes()
+    {
+        var response = await fetchSimpleList<string>("/types");
+        return response;
+    }
+
+    public async Task<List<int>?> fetchRetreats()
+    {
+        var response = await fetchSimpleList<int>("/retreat");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchRarities()
+    {
+        var response = await fetchSimpleList<string>("/rarities");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchIllustrators()
+    {
+        var response = await fetchSimpleList<string>("/illustrators");
+        return response;
+    }
+
+    public async Task<List<int>?> fetchHPs()
+    {
+        var response = await fetchSimpleList<int>("/hps");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchCategories()
+    {
+        var response = await fetchSimpleList<string>("/categories");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchDexIDs()
+    {
+        var response = await fetchSimpleList<string>("/dexids");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchEnergyTypes()
+    {
+        var response = await fetchSimpleList<string>("/energytypes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchRegulationMarks()
+    {
+        var response = await fetchSimpleList<string>("/regulationmarks");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchStages()
+    {
+        var response = await fetchSimpleList<string>("/stages");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchSuffixes()
+    {
+        var response = await fetchSimpleList<string>("/suffixes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchTrainerTypes()
+    {
+        var response = await fetchSimpleList<string>("/trainertypes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchVariants()
+    {
+        var response = await fetchSimpleList<string>("/variants");
+        return response;
+    }
+
+    
+    
 }

@@ -45,14 +45,58 @@ public sealed class Test1
 
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-        var a = "/cards";
+    }
 
-        var response2 = await client.GetAsync<List<Card>>(
-            a,
-            new { a }
-        );
+    [TestMethod]
+    public async Task TestfetchSets()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        var all_sets = await sdk.fetchSets();
+        Console.WriteLine(all_sets!.Count);
+        Assert.IsGreaterThan(199, all_sets!.Count);
+        var cardCountQuery = new Query("cardCount.total", "160");
+        var all_sets_query = await sdk.fetchSets(cardCountQuery);
+        Console.WriteLine(all_sets_query!.Count);
+        Assert.IsGreaterThan(0, all_sets_query!.Count);
 
-        Console.WriteLine(response2!.Count);
+    }
+
+    [TestMethod]
+    public async Task TestfetchSeries()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        var all_series = await sdk.fetchSeries();
+        Console.WriteLine(all_series!.Count);
+        Assert.IsGreaterThan(20, all_series!.Count);
+        var cardCountQuery = new Query("name", "Mega Evolution");
+        var all_sets_query = await sdk.fetchSeries(cardCountQuery);
+        Console.WriteLine(all_sets_query!.Count);
+        Assert.IsGreaterThan(0, all_sets_query!.Count);
+
+    }
+
+    [TestMethod]
+    public async Task TestOtherEndpoints()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        var a = await sdk.fetchTypes();
+        Console.WriteLine("Types: " + a!.Count);
+
+        var b = sdk.fetchHPs();
+        var c = sdk.fetchStages();
+        var d = sdk.fetchIllustrators();
+        var e = sdk.fetchCategories();
+        var f = sdk.fetchDexIDs();
+        var g = sdk.fetchEnergyTypes();
+        var h = sdk.fetchRarities();
+        var i = sdk.fetchRegulationMarks();
+        var j = sdk.fetchRetreats();
+        var k = sdk.fetchSuffixes();
+        var l = sdk.fetchTrainerTypes();
+        var m = sdk.fetchTypes();
+        var n = sdk.fetchVariants();
+
+
     }
 
     [TestMethod]
@@ -63,7 +107,7 @@ public sealed class Test1
         var card = await sdk.fetchCard("swsh3-136");
         var cardResume = await sdk.fetchCardResume("swsh3-136");
         var set = await sdk.fetchSet("swsh3");
-        var serie = await sdk.fetchSeries("swsh");
+        var serie = await sdk.fetchSerie("swsh");
         Assert.IsNotNull(card);
         Assert.IsNotNull(cardResume);
         Assert.IsNotNull(set);
@@ -82,9 +126,17 @@ public sealed class Test1
         Console.WriteLine(all_cards.ToString());
         Console.WriteLine(all_cards.Count);
         Assert.IsNotNull(all_cards);
-        Assert.I(all_cards);
-        Assert.IsGreaterThan(0, all_cards.count);
+        Assert.IsGreaterThan(0, all_cards.Count);
         */
+
+        var hpQuery = new Query(queryParameter: "hp", queryValue: "10");
+        var nameQuery = new Query(queryParameter: "name", queryValue: "Clefairy Doll");
+
+        var all_cards_query = await sdk.fetchCards(hpQuery, nameQuery);
+        Console.WriteLine(all_cards_query!.Count);
+        Assert.AreEqual("Clefairy Doll", all_cards_query[0].name);
+        //Assert.IsGreaterThan(3, all_cards_query!.Count);
+        
         
     }
 }
