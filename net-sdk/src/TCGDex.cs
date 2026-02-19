@@ -110,5 +110,11 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
+    public async Task<List<Serie>> fetchSeries(params Query[] queries)
+    {
+        var response = await fetchList<Serie>("/series", queries);
+        return response;
+    }
+
     
 }
