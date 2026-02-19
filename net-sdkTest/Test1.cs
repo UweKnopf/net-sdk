@@ -48,6 +48,20 @@ public sealed class Test1
     }
 
     [TestMethod]
+    public async Task TestfetchSets()
+    {
+        TCGDex sdk = new TCGDex(language: "en");
+        var all_sets = await sdk.fetchSets();
+        Console.WriteLine(all_sets!.Count);
+        Assert.IsGreaterThan(199, all_sets!.Count);
+        var cardCountQuery = new Query("cardCount.total", "160");
+        var all_sets_query = await sdk.fetchSets(cardCountQuery);
+        Console.WriteLine(all_sets_query!.Count);
+        Assert.IsGreaterThan(0, all_sets_query!.Count);
+
+    }
+
+    [TestMethod]
     public async Task EndStateTest()
     {
         TCGDex sdk = new TCGDex(language: "en");
