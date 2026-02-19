@@ -45,14 +45,6 @@ public sealed class Test1
 
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-        var a = "/cards";
-
-        var response2 = await client.GetAsync<List<Card>>(
-            a,
-            new { a }
-        );
-
-        Console.WriteLine(response2!.Count);
     }
 
     [TestMethod]
@@ -82,9 +74,17 @@ public sealed class Test1
         Console.WriteLine(all_cards.ToString());
         Console.WriteLine(all_cards.Count);
         Assert.IsNotNull(all_cards);
-        Assert.I(all_cards);
-        Assert.IsGreaterThan(0, all_cards.count);
+        Assert.IsGreaterThan(0, all_cards.Count);
         */
+
+        var hpQuery = new Query(queryParameter: "hp", queryValue: "10");
+        var nameQuery = new Query(queryParameter: "name", queryValue: "Clefairy Doll");
+
+        var all_cards_query = await sdk.fetchCards(hpQuery, nameQuery);
+        Console.WriteLine(all_cards_query!.Count);
+        Assert.AreEqual("Clefairy Doll", all_cards_query[0].name);
+        //Assert.IsGreaterThan(3, all_cards_query!.Count);
+        
         
     }
 }
