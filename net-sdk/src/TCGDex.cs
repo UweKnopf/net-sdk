@@ -15,6 +15,10 @@ public interface ITCGDex
     Task<Serie> fetchSeries(string SerieID);
 }
 
+//not great ergonomics; maybe make caller supply enum based on T
+public record class Query(string queryParameter, string queryValue);
+
+
 public class TCGDex: ITCGDex, IDisposable{
     readonly RestClient _client;
 
@@ -34,14 +38,18 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    private async Task<List<T>> fetchList<T>(string fetchParam, string queryParameter, string queryValue) where T : Model
+    private async Task<List<T>> fetchList<T>(string fetchParam, params Query[] querys) where T : Model
     {
         //var a = fetchParam; //passing fetchParam directly dosnt work but this does????
         var req = new RestRequest(fetchParam);
-        if (!string.IsNullOrEmpty(queryParameter) | !string.IsNullOrEmpty(queryValue)!)
+        foreach (var query in querys)
         {
-            req.AddQueryParameter(queryParameter, queryValue);
+            if (!string.IsNullOrEmpty(query.queryParameter) | !string.IsNullOrEmpty(query.queryValue)!)
+            {
+                req.AddQueryParameter(query.queryParameter, query.queryValue);
+            }
         }
+        
         var response = await _client.GetAsync<List<T>>(req);
 
         //this looks horrid but I mean it works so its fine??
@@ -65,9 +73,9 @@ public class TCGDex: ITCGDex, IDisposable{
         GC.SuppressFinalize(this);
     }
 
-    public async Task<List<CardResume>?> fetchCards(string queryParameter = "", string queryValue = "")
+    public async Task<List<CardResume>?> fetchCards(params Query[] queries)
     {
-        var response = await fetchList<CardResume>("/cards", queryParameter, queryValue);
+        var response = await fetchList<CardResume>("/cards", queries);
         return response;
     }
 
