@@ -124,11 +124,82 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    //endpoints for Listing purposes
-
+    //endpoints for Listing purposes    
     public async Task<List<string>?> fetchTypes()
     {
         var response = await fetchSimpleList<string>("/types");
+        return response;
+    }
+
+    public async Task<List<int>?> fetchRetreats()
+    {
+        var response = await fetchSimpleList<int>("/retreat");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchRarities()
+    {
+        var response = await fetchSimpleList<string>("/rarities");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchIllustrators()
+    {
+        var response = await fetchSimpleList<string>("/illustrators");
+        return response;
+    }
+
+    public async Task<List<int>?> fetchHPs()
+    {
+        var response = await fetchSimpleList<int>("/hps");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchCategories()
+    {
+        var response = await fetchSimpleList<string>("/categories");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchDexIDs()
+    {
+        var response = await fetchSimpleList<string>("/dexids");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchEnergyTypes()
+    {
+        var response = await fetchSimpleList<string>("/energytypes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchRegulationMarks()
+    {
+        var response = await fetchSimpleList<string>("/regulationmarks");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchStages()
+    {
+        var response = await fetchSimpleList<string>("/stages");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchSuffixes()
+    {
+        var response = await fetchSimpleList<string>("/suffixes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchTrainerTypes()
+    {
+        var response = await fetchSimpleList<string>("/trainertypes");
+        return response;
+    }
+
+    public async Task<List<string>?> fetchVariants()
+    {
+        var response = await fetchSimpleList<string>("/variants");
         return response;
     }
 

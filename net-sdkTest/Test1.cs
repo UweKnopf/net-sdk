@@ -82,6 +82,21 @@ public sealed class Test1
         var a = await sdk.fetchTypes();
         Console.WriteLine("Types: " + a!.Count);
 
+        var b = sdk.fetchHPs();
+        var c = sdk.fetchStages();
+        var d = sdk.fetchIllustrators();
+        var e = sdk.fetchCategories();
+        var f = sdk.fetchDexIDs();
+        var g = sdk.fetchEnergyTypes();
+        var h = sdk.fetchRarities();
+        var i = sdk.fetchRegulationMarks();
+        var j = sdk.fetchRetreats();
+        var k = sdk.fetchSuffixes();
+        var l = sdk.fetchTrainerTypes();
+        var m = sdk.fetchTypes();
+        var n = sdk.fetchVariants();
+
+
     }
 
     [TestMethod]
