@@ -12,7 +12,7 @@ public interface ITCGDex
     Task<Card> fetchCard(string CardID);
     Task<CardResume> fetchCardResume(string CardId);
     Task<Set> fetchSet(string SetID);
-    Task<Serie> fetchSeries(string SerieID);
+    Task<Serie> fetchSerie(string SerieID);
 }
 
 //not great ergonomics; maybe make caller supply enum based on T
@@ -104,9 +104,11 @@ public class TCGDex: ITCGDex, IDisposable{
         return response;
     }
 
-    public async Task<Serie> fetchSeries(string SerieID)
+    public async Task<Serie> fetchSerie(string SerieID)
     {
         var response = await fetch<Serie>("/series/" + SerieID);
         return response;
     }
+
+    
 }

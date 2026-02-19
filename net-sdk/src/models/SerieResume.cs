@@ -26,6 +26,6 @@ public record class SerieResume(
 
     public async Task<Serie?> getFullSerie()
     {
-        return await this.tCGDex.fetchSeries(this.id);
+        return await this.tCGDex.fetchSerie(this.id);
     }
 }

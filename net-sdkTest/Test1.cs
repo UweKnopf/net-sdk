@@ -69,7 +69,7 @@ public sealed class Test1
         var card = await sdk.fetchCard("swsh3-136");
         var cardResume = await sdk.fetchCardResume("swsh3-136");
         var set = await sdk.fetchSet("swsh3");
-        var serie = await sdk.fetchSeries("swsh");
+        var serie = await sdk.fetchSerie("swsh");
         Assert.IsNotNull(card);
         Assert.IsNotNull(cardResume);
         Assert.IsNotNull(set);
