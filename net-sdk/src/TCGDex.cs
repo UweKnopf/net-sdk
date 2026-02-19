@@ -27,10 +27,8 @@ public class TCGDex: ITCGDex, IDisposable{
 
     private async Task<T> fetch<T>(string fetchParam) where T : Model
     {
-        var response = await _client.GetAsync<T>(
-            $"{fetchParam}",
-            new { fetchParam }
-        );
+        var req = new RestRequest(fetchParam);
+        var response = await _client.GetAsync<T>(req);
         //null handling?
         response!.tCGDex = this;
         return response;
@@ -38,12 +36,9 @@ public class TCGDex: ITCGDex, IDisposable{
 
     private async Task<List<T>> fetchList<T>(string fetchParam) where T : Model
     {
-        var a = fetchParam; //passing fetchParam directly dosnt work but this does????
-
-        var response = await _client.GetAsync<List<T>>(
-            a,
-            new { a }
-        );
+        //var a = fetchParam; //passing fetchParam directly dosnt work but this does????
+        var req = new RestRequest(fetchParam);
+        var response = await _client.GetAsync<List<T>>(req);
 
         //this looks horrid but I mean it works so its fine??
         foreach (var card in response!)
