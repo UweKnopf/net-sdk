@@ -44,4 +44,14 @@ public record class Card(
     {
         return this.tCGDex.getImage(getImageUrl(quality, extension));
     }
+
+    public async Task<Set> getSet()
+    {
+        return await this.set.getFullSet();
+    }
+
+    public async Task<Serie> getSerie()
+    {   var fullSet = await this.set.getFullSet();
+        return await fullSet.serie.getFullSerie();
+    }
 }
