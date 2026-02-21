@@ -12,26 +12,27 @@ public sealed class Test1
     public async Task TestMethod1()
     {
         TCGDex sdk = new TCGDex(language: "en");
-        var a = await sdk.fetchCard("swsh3-136");
-        Assert.AreEqual("Pokemon", a.category);
-        Assert.AreEqual("tetsuya koizumi", a.illustrator);
-        Assert.AreEqual(110, a.hp);
-        Assert.AreEqual("It makes a nest to suit its long and skinny body. The nest is impossible for other Pokémon to enter.", a.description);
+        var a = await sdk.FetchCard("swsh3-136");
+        Assert.AreEqual("Pokemon", a.Category);
+        Assert.AreEqual("Furret", a.Name);
+        Assert.AreEqual("tetsuya koizumi", a.Illustrator);
+        Assert.AreEqual(110, a.Hp);
+        Assert.AreEqual("It makes a nest to suit its long and skinny body. The nest is impossible for other Pokémon to enter.", a.Description);
 
         //Console.WriteLine(a.getImageUrl(Quality.low, Extension.jpg));
 
-        Assert.AreEqual("https://assets.tcgdex.net/en/swsh/swsh3/136/low.jpg", a.getImageUrl(Quality.low, Extension.jpg));
+        Assert.AreEqual("https://assets.tcgdex.net/en/swsh/swsh3/136/low.jpg", a.GetImageUrl(Quality.low, Extension.jpg));
 
-        var img = a.getImage(Quality.low, Extension.jpg);
+        var img = a.GetImage(Quality.low, Extension.jpg);
         Assert.IsNotNull(img);
 
         //File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "poster-got.jpg"), img);
 
-        var b = await sdk.fetchCardResume("swsh3-136");
+        var b = await sdk.FetchCardResume("swsh3-136");
         //Console.WriteLine(a.ToString());
 
-        var c = await b.getFullCard();
-        Assert.AreEqual(expected: a.abilities, actual: c!.abilities);
+        var c = await b.GetFullCard();
+        Assert.AreEqual(expected: a.Abilities, actual: c!.Abilities);
 
     }
 
@@ -48,28 +49,28 @@ public sealed class Test1
     }
 
     [TestMethod]
-    public async Task TestfetchSets()
+    public async Task TestFetchSets()
     {
         TCGDex sdk = new TCGDex(language: "en");
-        var all_sets = await sdk.fetchSets();
+        var all_sets = await sdk.FetchSets();
         Console.WriteLine(all_sets!.Count);
         Assert.IsGreaterThan(199, all_sets!.Count);
         var cardCountQuery = new Query("cardCount.total", "160");
-        var all_sets_query = await sdk.fetchSets(cardCountQuery);
+        var all_sets_query = await sdk.FetchSets(cardCountQuery);
         Console.WriteLine(all_sets_query!.Count);
         Assert.IsGreaterThan(0, all_sets_query!.Count);
 
     }
 
     [TestMethod]
-    public async Task TestfetchSeries()
+    public async Task TestFetchSeries()
     {
         TCGDex sdk = new TCGDex(language: "en");
-        var all_series = await sdk.fetchSeries();
+        var all_series = await sdk.FetchSeries();
         Console.WriteLine(all_series!.Count);
         Assert.IsGreaterThan(20, all_series!.Count);
         var cardCountQuery = new Query("name", "Mega Evolution");
-        var all_sets_query = await sdk.fetchSeries(cardCountQuery);
+        var all_sets_query = await sdk.FetchSeries(cardCountQuery);
         Console.WriteLine(all_sets_query!.Count);
         Assert.IsGreaterThan(0, all_sets_query!.Count);
 
@@ -79,22 +80,22 @@ public sealed class Test1
     public async Task TestOtherEndpoints()
     {
         TCGDex sdk = new TCGDex(language: "en");
-        var a = await sdk.fetchTypes();
+        var a = await sdk.FetchTypes();
         Console.WriteLine("Types: " + a!.Count);
 
-        var b = sdk.fetchHPs();
-        var c = sdk.fetchStages();
-        var d = sdk.fetchIllustrators();
-        var e = sdk.fetchCategories();
-        var f = sdk.fetchDexIDs();
-        var g = sdk.fetchEnergyTypes();
-        var h = sdk.fetchRarities();
-        var i = sdk.fetchRegulationMarks();
-        var j = sdk.fetchRetreats();
-        var k = sdk.fetchSuffixes();
-        var l = sdk.fetchTrainerTypes();
-        var m = sdk.fetchTypes();
-        var n = sdk.fetchVariants();
+        var b = sdk.FetchHPs();
+        var c = sdk.FetchStages();
+        var d = sdk.FetchIllustrators();
+        var e = sdk.FetchCategories();
+        var f = sdk.FetchDexIDs();
+        var g = sdk.FetchEnergyTypes();
+        var h = sdk.FetchRarities();
+        var i = sdk.FetchRegulationMarks();
+        var j = sdk.FetchRetreats();
+        var k = sdk.FetchSuffixes();
+        var l = sdk.FetchTrainerTypes();
+        var m = sdk.FetchTypes();
+        var n = sdk.FetchVariants();
 
 
     }
@@ -104,10 +105,10 @@ public sealed class Test1
     {
         TCGDex sdk = new TCGDex(language: "en");
         //Basic fetch tests not throwing exceptions and returning something
-        var card = await sdk.fetchCard("swsh3-136");
-        var cardResume = await sdk.fetchCardResume("swsh3-136");
-        var set = await sdk.fetchSet("swsh3");
-        var serie = await sdk.fetchSerie("swsh");
+        var card = await sdk.FetchCard("swsh3-136");
+        var cardResume = await sdk.FetchCardResume("swsh3-136");
+        var set = await sdk.FetchSet("swsh3");
+        var serie = await sdk.FetchSerie("swsh");
         Assert.IsNotNull(card);
         Assert.IsNotNull(cardResume);
         Assert.IsNotNull(set);
@@ -115,26 +116,26 @@ public sealed class Test1
 
         //Console.WriteLine(set.ToString());
 
-        Assert.IsNotNull(card.getImage(Quality.low, Extension.jpg));
-        Assert.IsNotNull(cardResume.getFullCard());
-        Assert.IsNotNull(set.getLogo(Extension.jpg));
-        Assert.IsNotNull(set.getSymbol(Extension.jpg));
-        Assert.IsNotNull(serie.getLogo(Extension.jpg));
+        Assert.IsNotNull(card.GetImage(Quality.low, Extension.jpg));
+        Assert.IsNotNull(cardResume.GetFullCard());
+        Assert.IsNotNull(set.GetLogo(Extension.jpg));
+        Assert.IsNotNull(set.GetSymbol(Extension.jpg));
+        Assert.IsNotNull(serie.GetLogo(Extension.jpg));
         /*
         //Dont test this to often because it might spam the api (?)
-        var all_cards = await sdk.fetchCards();
+        var all_cards = await sdk.FetchCards();
         Console.WriteLine(all_cards.ToString());
         Console.WriteLine(all_cards.Count);
         Assert.IsNotNull(all_cards);
         Assert.IsGreaterThan(0, all_cards.Count);
         */
 
-        var hpQuery = new Query(queryParameter: "hp", queryValue: "10");
-        var nameQuery = new Query(queryParameter: "name", queryValue: "Clefairy Doll");
+        var hpQuery = new Query(QueryParameter: "hp", QueryValue: "10");
+        var nameQuery = new Query(QueryParameter: "name", QueryValue: "Clefairy Doll");
 
-        var all_cards_query = await sdk.fetchCards(hpQuery, nameQuery);
+        var all_cards_query = await sdk.FetchCards(hpQuery, nameQuery);
         Console.WriteLine(all_cards_query!.Count);
-        Assert.AreEqual("Clefairy Doll", all_cards_query[0].name);
+        Assert.AreEqual("Clefairy Doll", all_cards_query[0].Name);
         //Assert.IsGreaterThan(3, all_cards_query!.Count);
         
         

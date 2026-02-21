@@ -4,44 +4,44 @@ using net_sdk.src.models.subs;
 namespace net_sdk.src.models;
 
 public record class Set(
-    string id,
-    string? name,
-    string? logo,
-    string? symbol,
-    SerieResume serie,
-    string? tcgOnline,
-    string? releaseDate,
-    Legal legal,
-    SetCardCount cardCount,
-    List<CardResume> cards
+    string Id,
+    string? Name,
+    string? Logo,
+    string? Symbol,
+    SerieResume Serie,
+    string? TcgOnline,
+    string? ReleaseDate,
+    Legal Legal,
+    SetCardCount CardCount,
+    List<CardResume> Cards
 
 ) : Model()
 {
-    public string? getLogoUrl(Extension extension)
+    public string? GetLogoUrl(Extension extension)
     {
-        if (logo == null) return null;
-        return $"{this.logo}.{extension}";
+        if (Logo == null) return null;
+        return $"{Logo}.{extension}";
     }
 
-    public byte[]? getLogo(Extension extension)
+    public byte[]? GetLogo(Extension extension)
     {
-        var logoUrl = getLogoUrl(extension);
+        var logoUrl = GetLogoUrl(extension);
         if (logoUrl == null) return null;
-        return tCGDex.getImage(logoUrl);
+        return TCGDex.GetImage(logoUrl);
         
     }
 
-    public string? getSymbolUrl(Extension extension)
+    public string? GetSymbolUrl(Extension extension)
     {
-        if (symbol == null) return null;
-        return $"{this.symbol}.{extension}";
+        if (Symbol == null) return null;
+        return $"{Symbol}.{extension}";
     }
 
-    public byte[]? getSymbol(Extension extension)
+    public byte[]? GetSymbol(Extension extension)
     {
-        var symbolUrl = getSymbolUrl(extension);
+        var symbolUrl = GetSymbolUrl(extension);
         if (symbolUrl == null) return null;
-        return tCGDex.getImage(symbolUrl);
+        return TCGDex.GetImage(symbolUrl);
         
     }
 }

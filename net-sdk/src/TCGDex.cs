@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualBasic;
 using net_sdk.src.internal_classes;
 using net_sdk.src.models;
 using RestSharp;
@@ -9,18 +6,17 @@ namespace net_sdk.src;
 
 public interface ITCGDex
 {
-    Task<Card> fetchCard(string CardID);
-    Task<CardResume> fetchCardResume(string CardId);
-    Task<Set> fetchSet(string SetID);
-    Task<Serie> fetchSerie(string SerieID);
+    Task<Card> FetchCard(string cardId);
+    Task<CardResume> FetchCardResume(string cardId);
+    Task<Set> FetchSet(string setId);
+    Task<Serie> FetchSerie(string serieId);
 }
 
-//not great ergonomics; maybe make caller supply enum based on T
-public record class Query(string queryParameter, string queryValue);
+public record class Query(string QueryParameter, string QueryValue);
 
-
-public class TCGDex: ITCGDex, IDisposable{
-    readonly RestClient _client;
+public class TCGDex: ITCGDex, IDisposable
+{
+    private readonly RestClient _client;
 
     public TCGDex(string language)
     {
@@ -29,180 +25,170 @@ public class TCGDex: ITCGDex, IDisposable{
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
 
-    private async Task<T> fetch<T>(string fetchParam) where T : Model
+    private async Task<T> Fetch<T>(string fetchParam) where T : Model
     {
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<T>(req);
-        //null handling?
-        response!.tCGDex = this;
+        response!.TCGDex = this;
         return response;
     }
 
-    private async Task<List<T>> fetchList<T>(string fetchParam, params Query[] querys) where T : Model
+    private async Task<List<T>> FetchList<T>(string fetchParam, params Query[] queries) where T : Model
     {
-        //var a = fetchParam; //passing fetchParam directly dosnt work but this does????
         var req = new RestRequest(fetchParam);
-        foreach (var query in querys)
+        foreach (var query in queries)
         {
-            if (!string.IsNullOrEmpty(query.queryParameter) | !string.IsNullOrEmpty(query.queryValue)!)
+            if (!string.IsNullOrEmpty(query.QueryParameter) && !string.IsNullOrEmpty(query.QueryValue))
             {
-                req.AddQueryParameter(query.queryParameter, query.queryValue);
+                req.AddQueryParameter(query.QueryParameter, query.QueryValue);
             }
         }
         
         var response = await _client.GetAsync<List<T>>(req);
-
-        //this looks horrid but I mean it works so its fine??
         foreach (var card in response!)
         {
-            card.tCGDex = this;
+            card.TCGDex = this;
         }
         
         return response;
     }
 
-    private async Task<List<T>?> fetchSimpleList<T>(string fetchParam)
+    private async Task<List<T>?> FetchSimpleList<T>(string fetchParam)
     {
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<List<T>>(req);
-        
         return response;
     }
 
-    public byte[]? getImage(string imageUrl)
+    public byte[]? GetImage(string imageUrl)
     {
-        //possible bug with relative vs absolute imageUrl path
-        var fileBytes = this._client.DownloadData(new RestRequest(imageUrl, Method.Get));
+        var fileBytes = _client.DownloadData(new RestRequest(imageUrl, Method.Get));
         return fileBytes;
     }
 
-    public void Dispose() {
+    public void Dispose()
+    {
         _client?.Dispose();
         GC.SuppressFinalize(this);
     }
 
-    public async Task<List<CardResume>?> fetchCards(params Query[] queries)
+    public async Task<List<CardResume>?> FetchCards(params Query[] queries)
     {
-        var response = await fetchList<CardResume>("/cards", queries);
+        var response = await FetchList<CardResume>("/cards", queries);
         return response;
     }
 
-
-    public async Task<Card> fetchCard(string CardID)
+    public async Task<Card> FetchCard(string cardId)
     {
-        var response = await fetch<Card>("/cards/" + CardID);
+        var response = await Fetch<Card>("/cards/" + cardId);
         return response;
     }
 
-    public async Task<CardResume> fetchCardResume(string CardID)
+    public async Task<CardResume> FetchCardResume(string cardId)
     {
-        var response = await fetch<CardResume>("/cards/" + CardID);
+        var response = await Fetch<CardResume>("/cards/" + cardId);
         return response;
     }
 
-    public async Task<Set> fetchSet(string SetID)
+    public async Task<Set> FetchSet(string setId)
     {
-        var response = await fetch<Set>("/sets/" + SetID);
+        var response = await Fetch<Set>("/sets/" + setId);
         return response;
     }
 
-    public async Task<List<SetResume>> fetchSets(params Query[] queries)
+    public async Task<List<SetResume>> FetchSets(params Query[] queries)
     {
-        var response = await fetchList<SetResume>("/sets", queries);
+        var response = await FetchList<SetResume>("/sets", queries);
         return response;
     }
 
-    public async Task<Serie> fetchSerie(string SerieID)
+    public async Task<Serie> FetchSerie(string serieId)
     {
-        var response = await fetch<Serie>("/series/" + SerieID);
+        var response = await Fetch<Serie>("/series/" + serieId);
         return response;
     }
 
-    public async Task<List<Serie>> fetchSeries(params Query[] queries)
+    public async Task<List<Serie>> FetchSeries(params Query[] queries)
     {
-        var response = await fetchList<Serie>("/series", queries);
+        var response = await FetchList<Serie>("/series", queries);
         return response;
     }
 
-    //endpoints for Listing purposes    
-    public async Task<List<string>?> fetchTypes()
+    public async Task<List<string>?> FetchTypes()
     {
-        var response = await fetchSimpleList<string>("/types");
+        var response = await FetchSimpleList<string>("/types");
         return response;
     }
 
-    public async Task<List<int>?> fetchRetreats()
+    public async Task<List<int>?> FetchRetreats()
     {
-        var response = await fetchSimpleList<int>("/retreat");
+        var response = await FetchSimpleList<int>("/retreat");
         return response;
     }
 
-    public async Task<List<string>?> fetchRarities()
+    public async Task<List<string>?> FetchRarities()
     {
-        var response = await fetchSimpleList<string>("/rarities");
+        var response = await FetchSimpleList<string>("/rarities");
         return response;
     }
 
-    public async Task<List<string>?> fetchIllustrators()
+    public async Task<List<string>?> FetchIllustrators()
     {
-        var response = await fetchSimpleList<string>("/illustrators");
+        var response = await FetchSimpleList<string>("/illustrators");
         return response;
     }
 
-    public async Task<List<int>?> fetchHPs()
+    public async Task<List<int>?> FetchHPs()
     {
-        var response = await fetchSimpleList<int>("/hps");
+        var response = await FetchSimpleList<int>("/hps");
         return response;
     }
 
-    public async Task<List<string>?> fetchCategories()
+    public async Task<List<string>?> FetchCategories()
     {
-        var response = await fetchSimpleList<string>("/categories");
+        var response = await FetchSimpleList<string>("/categories");
         return response;
     }
 
-    public async Task<List<string>?> fetchDexIDs()
+    public async Task<List<string>?> FetchDexIDs()
     {
-        var response = await fetchSimpleList<string>("/dexids");
+        var response = await FetchSimpleList<string>("/dexids");
         return response;
     }
 
-    public async Task<List<string>?> fetchEnergyTypes()
+    public async Task<List<string>?> FetchEnergyTypes()
     {
-        var response = await fetchSimpleList<string>("/energytypes");
+        var response = await FetchSimpleList<string>("/energytypes");
         return response;
     }
 
-    public async Task<List<string>?> fetchRegulationMarks()
+    public async Task<List<string>?> FetchRegulationMarks()
     {
-        var response = await fetchSimpleList<string>("/regulationmarks");
+        var response = await FetchSimpleList<string>("/regulationmarks");
         return response;
     }
 
-    public async Task<List<string>?> fetchStages()
+    public async Task<List<string>?> FetchStages()
     {
-        var response = await fetchSimpleList<string>("/stages");
+        var response = await FetchSimpleList<string>("/stages");
         return response;
     }
 
-    public async Task<List<string>?> fetchSuffixes()
+    public async Task<List<string>?> FetchSuffixes()
     {
-        var response = await fetchSimpleList<string>("/suffixes");
+        var response = await FetchSimpleList<string>("/suffixes");
         return response;
     }
 
-    public async Task<List<string>?> fetchTrainerTypes()
+    public async Task<List<string>?> FetchTrainerTypes()
     {
-        var response = await fetchSimpleList<string>("/trainertypes");
+        var response = await FetchSimpleList<string>("/trainertypes");
         return response;
     }
 
-    public async Task<List<string>?> fetchVariants()
+    public async Task<List<string>?> FetchVariants()
     {
-        var response = await fetchSimpleList<string>("/variants");
+        var response = await FetchSimpleList<string>("/variants");
         return response;
     }
-
-    
-    
 }

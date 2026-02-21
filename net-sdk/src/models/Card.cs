@@ -4,54 +4,55 @@ using net_sdk.src.models.subs;
 namespace net_sdk.src.models;
 
 public record class Card(
-    string id,
-    string localId,
-    string name,
-    string? image,
-    string? illustrator,
-    string rarity,
-    string category,
-    CardVariants? varients,
-    SetResume set,
-    Pricing? pricing,
-    List<int>? dexId,
-    int? hp,
-    List<string>? types,
-    string? evolveFrom,
-    string? description,
-    string? level,
-    string? stage,
-    string? suffix,
-    CardItem? item,
-    List<CardAbility> abilities,
-    List<CardAttack> attacks,
-    List<CardWeakRes> weaknesses,
-    List<CardWeakRes> resistances,
-    int? retreat,
-    string? effect,
-    string? trainerType,
-    string? energyType,
-    string? regulationMark,
-    Legal legal
-    ):Model()
+    string Id,
+    string LocalId,
+    string Name,
+    string? Image,
+    string? Illustrator,
+    string Rarity,
+    string Category,
+    CardVariants? Variants,
+    SetResume Set,
+    Pricing? Pricing,
+    List<int>? DexId,
+    int? Hp,
+    List<string>? Types,
+    string? EvolveFrom,
+    string? Description,
+    string? Level,
+    string? Stage,
+    string? Suffix,
+    CardItem? Item,
+    List<CardAbility> Abilities,
+    List<CardAttack> Attacks,
+    List<CardWeakRes> Weaknesses,
+    List<CardWeakRes> Resistances,
+    int? Retreat,
+    string? Effect,
+    string? TrainerType,
+    string? EnergyType,
+    string? RegulationMark,
+    Legal Legal
+    ) : Model()
 {
-    public string getImageUrl(Quality quality, Extension extension)
+    public string GetImageUrl(Quality quality, Extension extension)
     {
-        return $"{this.image}/{quality}.{extension}";
+        return $"{this.Image}/{quality}.{extension}";
     }
 
-    public byte[]? getImage(Quality quality, Extension extension)
+    public byte[]? GetImage(Quality quality, Extension extension)
     {
-        return this.tCGDex.getImage(getImageUrl(quality, extension));
+        return this.TCGDex.GetImage(GetImageUrl(quality, extension));
     }
 
-    public async Task<Set> getSet()
+    public async Task<Set> GetSet()
     {
-        return await this.set.getFullSet();
+        return await this.Set.GetFullSet();
     }
 
-    public async Task<Serie> getSerie()
-    {   var fullSet = await this.set.getFullSet();
-        return await fullSet.serie.getFullSerie();
+    public async Task<Serie> GetSerie()
+    {
+        var fullSet = await this.Set.GetFullSet();
+        return await fullSet.Serie.GetFullSerie();
     }
 }
