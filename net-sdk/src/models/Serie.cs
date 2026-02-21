@@ -3,17 +3,17 @@ using net_sdk.src.internal_classes;
 namespace net_sdk.src.models;
 
 public record class Serie(
-    List<SetResume> sets,
-    string id,
-    string name,
-    string? logo
+    List<SetResume> Sets,
+    string Id,
+    string Name,
+    string? Logo
     
 ) : Model()
 {
     public string? GetLogoUrl(Extension extension)
     {
-        if (logo == null) return null;
-        return $"{this.logo}.{extension}";
+        if (Logo == null) return null;
+        return $"{this.Logo}.{extension}";
     }
 
     public byte[]? GetLogo(Extension extension)

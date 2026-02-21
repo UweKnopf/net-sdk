@@ -1,18 +1,17 @@
 namespace net_sdk.src.models.subs;
 
 public record class PricingCardMarket(
-    string? updated,
-    string? unit,
-    float? avg,
-    float? low,
-    float? trend,
-    float? avg1,
-    float? avg7,
-    float? avg30,
-    //Serializedname 
-    float? lowHolo,
-    float? trendHolo,
-    float? avg1Holo,
-    float? avg7Holo,
-    float? avg30Holo
+    string? Updated,
+    string? Unit,
+    float? Avg,
+    float? Low,
+    float? Trend,
+    float? Avg1,
+    float? Avg7,
+    float? Avg30,
+    float? LowHolo,
+    float? TrendHolo,
+    float? Avg1Holo,
+    float? Avg7Holo,
+    float? Avg30Holo
 );

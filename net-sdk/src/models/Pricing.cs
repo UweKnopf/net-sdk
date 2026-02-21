@@ -4,8 +4,8 @@ using net_sdk.src.models.subs;
 namespace net_sdk.src.models;
 
 public record class Pricing(
-    PricingTcgPlayer? tcgplayer,
-    PricingCardMarket? cardmarket
+    PricingTcgPlayer? Tcgplayer,
+    PricingCardMarket? Cardmarket
 ) : Model()
 {
 
