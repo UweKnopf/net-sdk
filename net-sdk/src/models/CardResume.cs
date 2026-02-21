@@ -4,28 +4,29 @@ using RestSharp;
 namespace net_sdk.src.models;
 
 public record class CardResume(
-    string id,
-    string localId,
-    string name,
-    string? image
-) :Model() {
-    public string getImageUrl(Quality quality, Extension extension)
+    string Id,
+    string LocalId,
+    string Name,
+    string? Image
+) : Model()
+{
+    public string GetImageUrl(Quality quality, Extension extension)
     {
-        return $"{this.image}/{quality}.{extension}";
+        return $"{this.Image}/{quality}.{extension}";
     }
 
-    public byte[]? getImage(Quality quality, Extension extension)
+    public byte[]? GetImage(Quality quality, Extension extension)
     {
         //probably wasteful to start another client here but no idea how to use the maine one in TCGDex without exposing the _client to the user
         RestClient restClient = new RestClient();
         restClient.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
-        var fileBytes = restClient.DownloadData(new RestRequest(getImageUrl(quality, extension), Method.Get));
+        var fileBytes = restClient.DownloadData(new RestRequest(GetImageUrl(quality, extension), Method.Get));
         return fileBytes;
     }
 
-    public async Task<Card?> getFullCard()
+    public async Task<Card?> GetFullCard()
     {
         //tCGDex = new TCGDex("en");
-        return await this.tCGDex.fetchCard(id);
+        return await this.TCGDex.FetchCard(Id);
     }
 }

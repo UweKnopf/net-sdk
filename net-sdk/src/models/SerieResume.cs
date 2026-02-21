@@ -3,29 +3,29 @@ using net_sdk.src.internal_classes;
 namespace net_sdk.src.models;
 
 public record class SerieResume(
-    string id,
-    string name,
-    string? logo
+    string Id,
+    string Name,
+    string? Logo
 
 ) : Model()
 {
 
-    public string? getLogoUrl(Extension extension)
+    public string? GetLogoUrl(Extension extension)
     {
-        if (logo == null) return null;
-        return $"{this.logo}.{extension}";
+        if (Logo == null) return null;
+        return $"{Logo}.{extension}";
     }
 
-    public byte[]? getLogo(Extension extension)
+    public byte[]? GetLogo(Extension extension)
     {
-        var logoUrl = getLogoUrl(extension);
+        var logoUrl = GetLogoUrl(extension);
         if (logoUrl == null) return null;
-        return tCGDex.getImage(logoUrl);
+        return TCGDex.GetImage(logoUrl);
         
     }
 
-    public async Task<Serie?> getFullSerie()
+    public async Task<Serie?> GetFullSerie()
     {
-        return await this.tCGDex.fetchSerie(this.id);
+        return await TCGDex.FetchSerie(Id);
     }
 }

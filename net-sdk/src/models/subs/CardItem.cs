@@ -1,3 +1,3 @@
 namespace net_sdk.src.models.subs;
 
-public record class CardItem(string name, string effect);
+public record class CardItem(string Name, string Effect);

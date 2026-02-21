@@ -5,7 +5,7 @@ namespace net_sdk.src.internal_classes;
 public abstract record class Model
 {
 
-    public TCGDex tCGDex;
+    public TCGDex TCGDex;
 
     
 
