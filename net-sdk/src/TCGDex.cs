@@ -1,3 +1,4 @@
+using System.Net;
 using net_sdk.src.internal_classes;
 using net_sdk.src.models;
 using RestSharp;
@@ -56,8 +57,25 @@ public class TCGDex: ITCGDex, IDisposable
     private async Task<List<T>?> FetchSimpleList<T>(string fetchParam)
     {
         var req = new RestRequest(fetchParam);
-        var response = await _client.GetAsync<List<T>>(req);
-        return response;
+        try
+        {
+            var response = await _client.GetAsync<List<T>>(req);
+            return response;
+        }
+        catch (System.Exception)
+        {
+            if (_client.Execute(req).StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new WebException("The resource you are trying to reach does not exists");
+            }
+            else
+            {
+                throw;
+            }
+            
+        }
+        
+        
     }
 
     public byte[]? GetImage(string imageUrl)
