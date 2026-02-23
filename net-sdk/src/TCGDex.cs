@@ -60,6 +60,8 @@ public class TCGDex: ITCGDex, IDisposable
         /*
         This is probably not the way to do this but we first need to think about what (if any) errors we want to return to caller.
         Might be better to not use getasync and instead separate response and deserialization
+
+        In that case the error thrown from restsharp would be more meaningful or, if none is thrown, we could do it ourself
         */
         try
         {
