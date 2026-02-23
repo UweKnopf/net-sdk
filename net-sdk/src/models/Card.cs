@@ -47,12 +47,15 @@ public record class Card(
 
     public async Task<Set> GetSet()
     {
+        //TODO: better way to do this
+        Set.TCGDex = this.TCGDex;
         return await this.Set.GetFullSet();
     }
 
     public async Task<Serie> GetSerie()
     {
-        var fullSet = await this.Set.GetFullSet();
+        var fullSet = await this.GetSet();
+        fullSet.Serie.TCGDex = this.TCGDex;
         return await fullSet.Serie.GetFullSerie();
     }
 }
