@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using net_sdk.src;
 using net_sdk.src.models;
 
-namespace MainTests.TCGDexClass;
+namespace net_sdkTest.MainTests.TCGDexClass;
 
 [TestClass]
 public class TCGDexTest
