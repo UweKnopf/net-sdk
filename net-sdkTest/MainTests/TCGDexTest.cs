@@ -258,17 +258,18 @@ public class TCGDexTest
         try
         {
             var unmocked_req = await sdk.FetchCard("swsh2-50");
+            //supposed to fail if not using api mock
+            Assert.IsNull(unmocked_req);
         }
-        catch (System.Exception)
+        catch (WebException e)
         {
             
-            throw;
+            Console.WriteLine(e);
         }
 
         
-
-        //Assert.IsNotNull(unmocked_req);
     }
-
     */
+
+    
 }
