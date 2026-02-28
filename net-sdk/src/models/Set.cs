@@ -44,4 +44,10 @@ public record class Set(
         return TCGDex.GetImage(symbolUrl);
         
     }
+
+    public async Task<Serie> GetSerie()
+    {
+        var serieId = Serie.Id;
+        return await TCGDex.FetchSerie(serieId);
+    }
 }
