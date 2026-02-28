@@ -13,7 +13,8 @@
   ],
   "mockResponsePlugin": {
     "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json",
-    "mocksFile": "mocks-20260228124106.json"
+    "mocksFile": "mocks-20260228124106.json",
+    "blockUnmockedRequests": true
   },
   "logLevel": "information",
   "newVersionNotification": "stable",

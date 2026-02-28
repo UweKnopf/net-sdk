@@ -247,4 +247,24 @@ public class TCGDexTest
 
         Assert.IsNotNull(all_variants);
     }
+
+    [TestMethod]
+    public async Task DevProxyConfigTest()
+    {
+        var sdk = createTCGDexEN();
+
+        try
+        {
+            var unmocked_req = await sdk.FetchCard("swsh2-50");
+        }
+        catch (System.Exception)
+        {
+            
+            throw;
+        }
+
+        
+
+        //Assert.IsNotNull(unmocked_req);
+    }
 }

@@ -24,7 +24,7 @@ jobs:
       uses: dev-proxy-tools/actions/setup@v1
       with:
         config-file: devproxy_mockunittestconfig
-        #auto-stop: false
+        auto-stop: false
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
