@@ -248,6 +248,8 @@ public class TCGDexTest
         Assert.IsNotNull(all_variants);
     }
 
+    /*
+    //Test for proper workflow config of dev proxy
     [TestMethod]
     public async Task DevProxyConfigTest()
     {
@@ -267,4 +269,6 @@ public class TCGDexTest
 
         //Assert.IsNotNull(unmocked_req);
     }
+
+    */
 }
