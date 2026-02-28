@@ -20,6 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Setup Dev Proxy
+      uses: dev-proxy-tools/actions/setup@v1
+    - name: Start Dev Proxy with config
+      uses: dev-proxy-tools/actions/start@v1
+      with:
+        config-file: .devproxy_mockunittestconfig
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
