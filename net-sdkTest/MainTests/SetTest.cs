@@ -54,4 +54,16 @@ public class SetTest
 
         Assert.AreEqual("swsh", serie.Id);
     }
+
+    [TestMethod]
+    public async Task GetCards_SetHasCards_ListOfCards()
+    {
+        var set = await GetTestSetEN();
+
+        var cards = await set.GetCards();
+
+        var card = await cards[0].GetFullCard();
+
+        Assert.IsNotEmpty(cards);
+    }
 }
