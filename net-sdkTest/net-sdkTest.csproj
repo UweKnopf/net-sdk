@@ -12,6 +12,11 @@
     <PackageReference Include="MSTest" Version="4.0.1" />
   </ItemGroup>
 
+  <PropertyGroup>
+  <!-- Options: Default, Recommended, All, None -->
+    <MSTestAnalysisMode>Recommended</MSTestAnalysisMode>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="../net-sdk/net-sdk.csproj" />
   </ItemGroup>

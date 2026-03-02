@@ -44,4 +44,16 @@ public record class Set(
         return TCGDex.GetImage(symbolUrl);
         
     }
+
+    public async Task<Serie> GetSerie()
+    {
+        var serieId = Serie.Id;
+        return await TCGDex.FetchSerie(serieId);
+    }
+    //what if caller wants to use the card field directly?
+    public async Task<List<CardResume>> GetCards()
+    {
+        var query = new Query("set", $"{Id}");
+        return await TCGDex.FetchCards(query);
+    }
 }
