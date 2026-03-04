@@ -66,4 +66,30 @@ public class SetTest
 
         Assert.IsNotEmpty(cards);
     }
+
+    [TestMethod]
+    public async Task UseFieldSerie_SerieFieldExists_FullSerie()
+    {
+        var set = await GetTestSetEN();
+
+        var serieResume = set.Serie;
+
+        var serie = await serieResume.GetFullSerie();
+        
+
+        Assert.IsNotNull(serie);
+    }
+
+    [TestMethod]
+    public async Task UseFieldCards_CardsFieldExists_FullCard()
+    {
+        var set = await GetTestSetEN();
+
+        var cardResumes = set.Cards;
+
+        var card = await cardResumes[0].GetFullCard();
+        
+
+        Assert.IsNotNull(card);
+    }
 }

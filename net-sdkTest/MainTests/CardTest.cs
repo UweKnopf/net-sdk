@@ -53,4 +53,17 @@ public class CardTest
 
         Assert.AreEqual("swsh", serie.Id);
     }
+
+    [TestMethod]
+    public async Task UseFieldSet_SetFieldExists_FullSerie()
+    {
+        var card = await GetTestCardEN();
+
+        var setResume = card.Set;
+
+        var fullSet = await setResume.GetFullSet();
+        
+
+        Assert.IsNotNull(fullSet);
+    }
 }

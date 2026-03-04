@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Net;
+using System.Reflection;
 using net_sdk.src.internal_classes;
 using net_sdk.src.models;
 using RestSharp;
@@ -31,6 +33,30 @@ public class TCGDex: ITCGDex, IDisposable
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<T>(req);
         response!.TCGDex = this;
+        //there must be a better way
+        PropertyInfo[] properties = typeof(T).GetProperties();
+        foreach (PropertyInfo property in properties)
+        {
+            if (property.GetValue(response) is IEnumerable l)
+            {
+                IEnumerable<Model> items = l.OfType<Model>();
+                if (items.Count() != 0)
+                {
+                    foreach (var item in items)
+                    {
+                        item.TCGDex = this;
+                    }
+                }
+            }
+            if (property.GetValue(response) != null && typeof(Model).IsAssignableFrom(property.PropertyType))
+            {
+                var x = (Model)property.GetValue(response)!;
+                x.TCGDex = this;
+                property.SetValue(response, x);
+                
+            }
+            
+        }
         return response;
     }
 
