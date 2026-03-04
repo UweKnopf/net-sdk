@@ -27,4 +27,16 @@ public class SerieTest
         
         Assert.IsNotNull(Serie.GetLogo(Extension.png));
     }
+
+    [TestMethod]
+    public async Task UsePropertySets_SetsExist_AFullSet()
+    {
+        var Serie = await GetTestSerieEN();
+
+        var sets = Serie.Sets;
+
+        var set = sets[0].GetFullSet();
+        
+        Assert.IsNotNull(set);
+    }
 }
