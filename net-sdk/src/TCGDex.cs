@@ -15,8 +15,6 @@ public interface ITCGDex
     Task<Serie> FetchSerie(string serieId);
 }
 
-public record class Query(string QueryParameter, string QueryValue);
-
 public class TCGDex: ITCGDex, IDisposable
 {
     private readonly RestClient _client;
@@ -60,16 +58,22 @@ public class TCGDex: ITCGDex, IDisposable
         return response;
     }
 
-    private async Task<List<T>> FetchList<T>(string fetchParam, params Query[] queries) where T : Model
+    private async Task<List<T>> FetchList<T>(string fetchParam) where T : Model
     {
-        var req = new RestRequest(fetchParam);
-        foreach (var query in queries)
+        RestRequest req = new RestRequest(fetchParam);
+        
+        var response = await _client.GetAsync<List<T>>(req);
+        foreach (var card in response!)
         {
-            if (!string.IsNullOrEmpty(query.QueryParameter) && !string.IsNullOrEmpty(query.QueryValue))
-            {
-                req.AddQueryParameter(query.QueryParameter, query.QueryValue);
-            }
+            card.TCGDex = this;
         }
+        
+        return response;
+    }
+
+    private async Task<List<T>> FetchList<T>(string fetchParam, Query query) where T : Model
+    {
+        RestRequest req = query.ReturnRequestWithAllQueries(fetchParam);
         
         var response = await _client.GetAsync<List<T>>(req);
         foreach (var card in response!)
@@ -122,9 +126,15 @@ public class TCGDex: ITCGDex, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public async Task<List<CardResume>?> FetchCards(params Query[] queries)
+    public async Task<List<CardResume>?> FetchCards(Query query)
     {
-        var response = await FetchList<CardResume>("/cards", queries);
+        var response = await FetchList<CardResume>("/cards", query);
+        return response;
+    }
+
+    public async Task<List<CardResume>?> FetchCards()
+    {
+        var response = await FetchList<CardResume>("/cards");
         return response;
     }
 
@@ -146,9 +156,15 @@ public class TCGDex: ITCGDex, IDisposable
         return response;
     }
 
-    public async Task<List<SetResume>> FetchSets(params Query[] queries)
+    public async Task<List<SetResume>> FetchSets(Query query)
     {
-        var response = await FetchList<SetResume>("/sets", queries);
+        var response = await FetchList<SetResume>("/sets", query);
+        return response;
+    }
+
+    public async Task<List<SetResume>> FetchSets()
+    {
+        var response = await FetchList<SetResume>("/sets");
         return response;
     }
 
@@ -158,9 +174,15 @@ public class TCGDex: ITCGDex, IDisposable
         return response;
     }
 
-    public async Task<List<Serie>> FetchSeries(params Query[] queries)
+    public async Task<List<Serie>> FetchSeries(Query query)
     {
-        var response = await FetchList<Serie>("/series", queries);
+        var response = await FetchList<Serie>("/series", query);
+        return response;
+    }
+
+    public async Task<List<Serie>> FetchSeries()
+    {
+        var response = await FetchList<Serie>("/series");
         return response;
     }
 
