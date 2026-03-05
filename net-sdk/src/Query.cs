@@ -178,6 +178,11 @@ public class Query
     {
         return new RestRequest(fetchParam + totalQueryString);
     }
+
+    internal string ReturnRequestStringWithAllQueries(string fetchParam)
+    {
+        return fetchParam + totalQueryString;
+    }
 }
 
 public enum SortOrders
