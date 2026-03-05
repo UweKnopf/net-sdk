@@ -9,36 +9,12 @@ public record class SetResume(
     string? Logo,
     string? Symbol,
     SetCardCount CardCount
-) : Model()
+) : SetAbstract(Id, Name, Logo, Symbol, CardCount)
 {
-    public string? GetLogoUrl(Extension extension)
-    {
-        if (Logo == null) return null;
-        return $"{Logo}.{extension}";
-    }
-
-    public byte[]? GetLogo(Extension extension)
-    {
-        var logoUrl = GetLogoUrl(extension);
-        if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
-        
-    }
-
-    public string? GetSymbolUrl(Extension extension)
-    {
-        if (Symbol == null) return null;
-        return $"{Symbol}.{extension}";
-    }
-
-    public byte[]? GetSymbol(Extension extension)
-    {
-        var symbolUrl = GetSymbolUrl(extension);
-        if (symbolUrl == null) return null;
-        return TCGDex.GetImage(symbolUrl);
-        
-    }
-
+    /// <summary>
+    /// Async returns a <see cref="Set"/> of the SetResume.
+    /// </summary>
+    /// <returns>Returns the full set as a <see cref="Set"/>.</returns>
     public async Task<Set?> GetFullSet()
     {
         return await TCGDex.FetchSet(Id);

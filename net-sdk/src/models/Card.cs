@@ -33,23 +33,20 @@ public record class Card(
     string? EnergyType,
     string? RegulationMark,
     Legal Legal
-    ) : Model()
+    ) : CardAbstract(Id, LocalId, Name, Image)
 {
-    public string GetImageUrl(Quality quality, Extension extension)
-    {
-        return $"{this.Image}/{quality}.{extension}";
-    }
-
-    public byte[]? GetImage(Quality quality, Extension extension)
-    {
-        return this.TCGDex.GetImage(GetImageUrl(quality, extension));
-    }
-
+    /// <summary>
+    /// Async returns the <see cref="Set"/> of the Card.
+    /// </summary>
+    /// <returns></returns>
     public async Task<Set> GetSet()
     {
         return await Set.GetFullSet();
     }
-
+    /// <summary>
+    /// Async returns the <see cref="Serie"/> of the Card.
+    /// </summary>
+    /// <returns></returns>
     public async Task<Serie> GetSerie()
     {
         var set = await GetSet(); 

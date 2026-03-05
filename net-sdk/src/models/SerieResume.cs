@@ -7,23 +7,12 @@ public record class SerieResume(
     string Name,
     string? Logo
 
-) : Model()
+) : SerieAbstract(Id, Name, Logo)
 {
-
-    public string? GetLogoUrl(Extension extension)
-    {
-        if (Logo == null) return null;
-        return $"{Logo}.{extension}";
-    }
-
-    public byte[]? GetLogo(Extension extension)
-    {
-        var logoUrl = GetLogoUrl(extension);
-        if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
-        
-    }
-
+    /// <summary>
+    /// Async returns a <see cref="Serie"/> of the SerieResume.
+    /// </summary>
+    /// <returns></returns>
     public async Task<Serie?> GetFullSerie()
     {
         return await TCGDex.FetchSerie(Id);

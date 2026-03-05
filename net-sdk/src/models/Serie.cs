@@ -8,19 +8,7 @@ public record class Serie(
     string Name,
     string? Logo
     
-) : Model()
+) : SerieAbstract(Id, Name, Logo)
 {
-    public string? GetLogoUrl(Extension extension)
-    {
-        if (Logo == null) return null;
-        return $"{this.Logo}.{extension}";
-    }
-
-    public byte[]? GetLogo(Extension extension)
-    {
-        var logoUrl = GetLogoUrl(extension);
-        if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
-        
-    }
+    
 }
