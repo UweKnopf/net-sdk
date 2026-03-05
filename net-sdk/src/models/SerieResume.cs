@@ -16,11 +16,11 @@ public record class SerieResume(
         return $"{Logo}.{extension}";
     }
 
-    public byte[]? GetLogo(Extension extension)
+    public async Task<byte[]?> GetLogo(Extension extension)
     {
         var logoUrl = GetLogoUrl(extension);
         if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
+        return await TCGDex.GetImage(logoUrl);
         
     }
 

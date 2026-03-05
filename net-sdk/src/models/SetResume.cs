@@ -26,11 +26,11 @@ public record class SetResume(
     /// </summary>
     /// <param name="extension"></param>
     /// <returns>Returns the logo of the set as a byte array.</returns>
-    public byte[]? GetLogo(Extension extension)
+    public async Task<byte[]?> GetLogo(Extension extension)
     {
         var logoUrl = GetLogoUrl(extension);
         if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
+        return await TCGDex.GetImage(logoUrl);
         
     }
     /// <summary>
@@ -48,11 +48,11 @@ public record class SetResume(
     /// </summary>
     /// <param name="extension"></param>
     /// <returns>Returns the symbol of the set as a byte array.</returns>
-    public byte[]? GetSymbol(Extension extension)
+    public async Task<byte[]?> GetSymbol(Extension extension)
     {
         var symbolUrl = GetSymbolUrl(extension);
         if (symbolUrl == null) return null;
-        return TCGDex.GetImage(symbolUrl);
+        return await TCGDex.GetImage(symbolUrl);
         
     }
     /// <summary>

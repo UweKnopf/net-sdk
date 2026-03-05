@@ -40,9 +40,9 @@ public record class Card(
         return $"{this.Image}/{quality}.{extension}";
     }
 
-    public byte[]? GetImage(Quality quality, Extension extension)
+    public async Task<byte[]?> GetImage(Quality quality, Extension extension)
     {
-        return this.TCGDex.GetImage(GetImageUrl(quality, extension));
+        return await TCGDex.GetImage(GetImageUrl(quality, extension));
     }
 
     public async Task<Set> GetSet()

@@ -171,9 +171,9 @@ public class TCGDex: ITCGDex, IDisposable
     /// </summary>
     /// <param name="imageUrl"></param>
     /// <returns>byte[]?</returns>
-    public byte[]? GetImage(string imageUrl)
+    public async Task<byte[]?> GetImage(string imageUrl)
     {
-        var fileBytes = _client.DownloadData(new RestRequest(imageUrl, Method.Get));
+        var fileBytes = await _client.DownloadDataAsync(new RestRequest(imageUrl, Method.Get));
         return fileBytes;
     }
 

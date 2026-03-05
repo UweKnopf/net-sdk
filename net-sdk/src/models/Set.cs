@@ -23,11 +23,11 @@ public record class Set(
         return $"{Logo}.{extension}";
     }
 
-    public byte[]? GetLogo(Extension extension)
+    public async Task<byte[]?> GetLogo(Extension extension)
     {
         var logoUrl = GetLogoUrl(extension);
         if (logoUrl == null) return null;
-        return TCGDex.GetImage(logoUrl);
+        return await TCGDex.GetImage(logoUrl);
         
     }
 
@@ -37,11 +37,11 @@ public record class Set(
         return $"{Symbol}.{extension}";
     }
 
-    public byte[]? GetSymbol(Extension extension)
+    public async Task<byte[]?> GetSymbol(Extension extension)
     {
         var symbolUrl = GetSymbolUrl(extension);
         if (symbolUrl == null) return null;
-        return TCGDex.GetImage(symbolUrl);
+        return await TCGDex.GetImage(symbolUrl);
         
     }
     //Both of these should potentially return full objects because the resume is already a property

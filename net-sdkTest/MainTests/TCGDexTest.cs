@@ -14,24 +14,24 @@ public class TCGDexTest
     }
 
     [TestMethod]
-    public void GetImage_CorrectImageURL_ReturnBytes()
+    public async Task GetImage_CorrectImageURL_ReturnBytes()
     {
         var sdk = createTCGDexEN();
         var imageUrl = "https://assets.tcgdex.net/en/bw/bw6/1/low.png";
 
-        var imageBytes = sdk.GetImage(imageUrl);
+        var imageBytes = await sdk.GetImage(imageUrl);
 
         Assert.IsNotNull(imageBytes);
         Assert.IsInstanceOfType(imageBytes, typeof(byte[]));
     }
 
     [TestMethod]
-    public void GetImage_WrongImageURL_()
+    public async Task GetImage_WrongImageURL_()
     {
         var sdk = createTCGDexEN();
         var imageUrl = "";
 
-        var imageBytes = sdk.GetImage(imageUrl);
+        var imageBytes = await sdk.GetImage(imageUrl);
 
         Assert.IsNull(imageBytes);
     }

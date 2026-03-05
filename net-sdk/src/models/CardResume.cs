@@ -15,13 +15,10 @@ public record class CardResume(
         return $"{this.Image}/{quality}.{extension}";
     }
 
-    public byte[]? GetImage(Quality quality, Extension extension)
+    public async Task<byte[]?> GetImage(Quality quality, Extension extension)
     {
-        //probably wasteful to start another client here but no idea how to use the maine one in TCGDex without exposing the _client to the user
-        RestClient restClient = new RestClient();
-        restClient.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
-        var fileBytes = restClient.DownloadData(new RestRequest(GetImageUrl(quality, extension), Method.Get));
-        return fileBytes;
+        
+        return await TCGDex.GetImage(GetImageUrl(quality, extension));
     }
 
     public async Task<Card?> GetFullCard()
