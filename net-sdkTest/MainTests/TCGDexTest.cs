@@ -83,6 +83,39 @@ public class TCGDexTest
     }
 
     [TestMethod]
+    public async Task FetchCards_WithHPGreaterThanQuery_CardsWithGreaterThan100HPAsResumes()
+    {
+        var sdk = createTCGDexEN();
+
+        var query = new Query().Greater("hp", "100");
+
+        var tanks = await sdk.FetchCards(query);
+        var firstTank = await tanks[0].GetFullCard();
+        int firstTankHp = (int)firstTank.Hp;
+
+        Assert.IsNotNull(tanks);
+        Assert.IsNotEmpty(tanks);
+        Assert.IsGreaterThan(100, firstTankHp);
+    }
+
+    [TestMethod]
+    public async Task FetchCards_SortAndNameQuery_CardsWithPickachuSortedBasedOnHpAceAsResumes()
+    {
+        var sdk = createTCGDexEN();
+
+        var query = new Query().Equal("name", "pikachu").Sort("hp", SortOrders.Ascending);
+
+        var pickachuSorted = await sdk.FetchCards(query);
+
+        var first = await pickachuSorted[0].GetFullCard();
+        var second = await pickachuSorted[1].GetFullCard();
+
+        Assert.IsNotNull(pickachuSorted);
+        Assert.IsNotEmpty(pickachuSorted);
+        Assert.IsGreaterThanOrEqualTo((int)first.Hp, (int)second.Hp);
+    }
+
+    [TestMethod]
     public async Task FetchCard_RightCardID_CardObjectOfCardID()
     {
         var sdk = createTCGDexEN();
