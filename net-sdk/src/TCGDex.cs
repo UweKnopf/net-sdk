@@ -177,6 +177,9 @@ public class TCGDex: ITCGDex, IDisposable
         return fileBytes;
     }
 
+    /// <summary>
+    /// Disposes the RestClient and suppresses finalization. Should be called when you are done using the TCGDex instance.
+    /// </summary>
     public void Dispose()
     {
         _client?.Dispose();
@@ -194,7 +197,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a list of all <see cref="CardResume"/>
+    /// Async returns a list of all <see cref="CardResume"/>.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -205,7 +208,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a <see cref="Card"/> based on its id property
+    /// Async returns a <see cref="Card"/> based on its id property.
     /// </summary>
     /// <param name="cardId"></param>
     /// <returns></returns>
@@ -216,7 +219,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a <see cref="CardResume"/> based on its id property
+    /// Async returns a <see cref="CardResume"/> based on its id property.
     /// </summary>
     /// <param name="cardId"></param>
     /// <returns></returns>
@@ -227,7 +230,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a <see cref="Set"/> based on its id property
+    /// Async returns a <see cref="Set"/> based on its id property.
     /// </summary>
     /// <param name="setId"></param>
     /// <returns></returns>
@@ -238,7 +241,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async queries a list of <see cref="SetResume"/>
+    /// Async queries a list of <see cref="SetResume"/>.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -249,7 +252,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a list of all <see cref="SetResume"/>
+    /// Async returns a list of all <see cref="SetResume"/>.
     /// </summary>
     /// <returns></returns>
     public async Task<List<SetResume>> FetchSets()
@@ -259,7 +262,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a <see cref="Serie"/> based on its id property
+    /// Async returns a <see cref="Serie"/> based on its id property.
     /// </summary>
     /// <param name="serieId"></param>
     /// <returns></returns>
@@ -270,7 +273,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async queries a list of <see cref="Serie"/>
+    /// Async queries a list of <see cref="Serie"/>.
     /// </summary>
     /// <param name="query"></param>
     /// <returns></returns>
@@ -281,7 +284,7 @@ public class TCGDex: ITCGDex, IDisposable
     }
 
     /// <summary>
-    /// Async returns a list of all <see cref="Serie"/>
+    /// Async returns a list of all <see cref="Serie"/>.
     /// </summary>
     /// <returns></returns>
     public async Task<List<Serie>> FetchSeries()
