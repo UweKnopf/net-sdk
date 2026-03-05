@@ -103,6 +103,7 @@ public class TCGDexTest
     {
         var sdk = createTCGDexEN();
 
+
         var query = new Query().Equal("name", "pikachu").Sort("hp", SortOrders.Ascending);
 
         var pickachuSorted = await sdk.FetchCards(query);
@@ -113,6 +114,31 @@ public class TCGDexTest
         Assert.IsNotNull(pickachuSorted);
         Assert.IsNotEmpty(pickachuSorted);
         Assert.IsGreaterThanOrEqualTo((int)first.Hp, (int)second.Hp);
+    }
+
+    [TestMethod]
+    public async Task FetchCards_SortAndNameQueryUsingCache_CardsWithPickachuSortedBasedOnHpAceAsResumes()
+    {
+        var sdk = createTCGDexEN();
+
+
+        var query = new Query().Equal("name", "pikachu").Sort("hp", SortOrders.Ascending);
+
+        var pickachuSorted = await sdk.FetchCards(query);
+
+        var first = await pickachuSorted[0].GetFullCard();
+        var second = await pickachuSorted[1].GetFullCard();
+
+        Assert.IsNotNull(pickachuSorted);
+        Assert.IsNotEmpty(pickachuSorted);
+        Assert.IsGreaterThanOrEqualTo((int)first.Hp, (int)second.Hp);
+
+        var pickachuSorted_cached = await sdk.FetchCards(query);
+
+        var first_cached = await pickachuSorted_cached[0].GetFullCard();
+        var second_cached = await pickachuSorted_cached[1].GetFullCard();
+
+        Assert.AreEqual(first, first_cached);
     }
 
     [TestMethod]
@@ -136,6 +162,37 @@ public class TCGDexTest
 
         Assert.IsNotNull(card);
         Assert.IsNull(card.Name);
+    }
+
+    [TestMethod]
+    public async Task FetchCard_UsingCache_Card()
+    {
+        var sdk = createTCGDexEN();
+        var cardID = "swsh3-136";
+
+        var card = await sdk.FetchCard(cardID);
+
+        Assert.IsNotNull(card);
+        Assert.IsNotNull(card.Name);
+
+        var cached_card = await sdk.FetchCard(cardID);
+        Assert.AreEqual(card, cached_card);
+    }
+
+    [TestMethod]
+    public async Task FetchCard_UsingCacheButCacheEntryExpires_Card()
+    {
+        var sdk = createTCGDexEN();
+        var cardID = "swsh3-136";
+        sdk.SetCacheTTL(0.1);
+
+        var card = await sdk.FetchCard(cardID);
+
+        Assert.IsNotNull(card);
+        Assert.IsNotNull(card.Name);
+        Thread.Sleep(10000);
+        var cached_card = await sdk.FetchCard(cardID);
+        Assert.AreNotEqual(card, cached_card);
     }
 
     [TestMethod]
@@ -170,6 +227,21 @@ public class TCGDexTest
         var all_sets = await sdk.FetchSets();
 
         Assert.IsNotNull(all_sets);
+
+    }
+
+    [TestMethod]
+    public async Task FetchSets_NoQueryUsingCache_AllSetAsResumes()
+    {
+        var sdk = createTCGDexEN();
+
+        var all_sets = await sdk.FetchSets();
+
+        Assert.IsNotNull(all_sets);
+
+        var cached_sets = await sdk.FetchSets();
+
+        Assert.IsNotNull(cached_sets);
 
     }
 

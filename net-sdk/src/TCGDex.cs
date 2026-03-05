@@ -15,9 +15,19 @@ public interface ITCGDex
     Task<Serie> FetchSerie(string serieId);
 }
 
+
+
 public class TCGDex: ITCGDex, IDisposable
 {
+
+    internal struct CacheValue
+    {
+        internal Object Data;
+        internal DateTime DateTime;
+    }
     private readonly RestClient _client;
+    private Dictionary<string, CacheValue> cache = new Dictionary<string, CacheValue>();
+    private double TTL = 30;
 
     public TCGDex(string language)
     {
@@ -26,8 +36,31 @@ public class TCGDex: ITCGDex, IDisposable
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
 
+    private object? cacheLookUp(string relativePath)
+    {
+        if (cache.TryGetValue(relativePath, out CacheValue value) && DateTime.Now.Subtract(value.DateTime).TotalMinutes < TTL)
+        {
+            return value.Data;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Sets the time in minutes before a cache entry is discarded and fetched again.
+    /// </summary>
+    /// <param name="TTLInMinutes"></param>
+    public void SetCacheTTL(double TTLInMinutes)
+    {
+        TTL = TTLInMinutes;
+    }
+
     private async Task<T> Fetch<T>(string fetchParam) where T : Model
     {
+        if (cacheLookUp(fetchParam) != null)
+        {
+            return (T)cacheLookUp(fetchParam);
+        }
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<T>(req);
         response!.TCGDex = this;
@@ -55,11 +88,19 @@ public class TCGDex: ITCGDex, IDisposable
             }
             
         }
+        CacheValue cacheValue = new CacheValue();
+        cacheValue.Data = response;
+        cacheValue.DateTime = DateTime.Now;
+        cache[fetchParam] = cacheValue;
         return response;
     }
 
     private async Task<List<T>> FetchList<T>(string fetchParam) where T : Model
     {
+        if (cacheLookUp(fetchParam) != null)
+        {
+            return (List<T>)cacheLookUp(fetchParam);
+        }
         RestRequest req = new RestRequest(fetchParam);
         
         var response = await _client.GetAsync<List<T>>(req);
@@ -67,20 +108,31 @@ public class TCGDex: ITCGDex, IDisposable
         {
             card.TCGDex = this;
         }
-        
+        CacheValue cacheValue = new CacheValue();
+        cacheValue.Data = response;
+        cacheValue.DateTime = DateTime.Now;
+        cache[fetchParam] = cacheValue;
         return response;
     }
 
     private async Task<List<T>> FetchList<T>(string fetchParam, Query query) where T : Model
     {
-        RestRequest req = query.ReturnRequestWithAllQueries(fetchParam);
+        var combinedRequestURL = query.ReturnRequestStringWithAllQueries(fetchParam);
+        if (cacheLookUp(combinedRequestURL) != null)
+        {
+            return (List<T>)cacheLookUp(combinedRequestURL);
+        }
+        RestRequest req = new RestRequest(combinedRequestURL);
         
         var response = await _client.GetAsync<List<T>>(req);
         foreach (var card in response!)
         {
             card.TCGDex = this;
         }
-        
+        CacheValue cacheValue = new CacheValue();
+        cacheValue.Data = response;
+        cacheValue.DateTime = DateTime.Now;
+        cache[combinedRequestURL] = cacheValue;
         return response;
     }
 
