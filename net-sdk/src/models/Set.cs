@@ -44,16 +44,15 @@ public record class Set(
         return TCGDex.GetImage(symbolUrl);
         
     }
+    //Both of these should potentially return full objects because the resume is already a property
 
     public async Task<Serie> GetSerie()
     {
-        var serieId = Serie.Id;
-        return await TCGDex.FetchSerie(serieId);
+        return await Serie.GetFullSerie();
     }
     //what if caller wants to use the card field directly?
-    public async Task<List<CardResume>> GetCards()
+    public List<CardResume> GetCards()
     {
-        var query = new Query("set", $"{Id}");
-        return await TCGDex.FetchCards(query);
+        return Cards;
     }
 }
