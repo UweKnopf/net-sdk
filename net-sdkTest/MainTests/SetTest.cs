@@ -60,7 +60,7 @@ public class SetTest
     {
         var set = await GetTestSetEN();
 
-        var cards = await set.GetCards();
+        var cards = set.GetCards();
 
         var card = await cards[0].GetFullCard();
 
