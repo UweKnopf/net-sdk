@@ -12,9 +12,10 @@ public class Query
         
     }
 
-    public void Equal(string parameter, string value)
+    public Query Equal(string parameter, string value)
     {
         totalQueryString += $"{parameter}={value}&";
+        return this;
     }
 
     public RestRequest ReturnRequestWithAllQueries(string fetchParam)
