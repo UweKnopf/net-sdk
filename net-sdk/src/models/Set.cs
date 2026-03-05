@@ -15,37 +15,8 @@ public record class Set(
     SetCardCount CardCount,
     List<CardResume> Cards
 
-) : Model()
+) : SetAbstract(Id, Name, Logo, Symbol, CardCount)
 {
-    public string? GetLogoUrl(Extension extension)
-    {
-        if (Logo == null) return null;
-        return $"{Logo}.{extension}";
-    }
-
-    public async Task<byte[]?> GetLogo(Extension extension)
-    {
-        var logoUrl = GetLogoUrl(extension);
-        if (logoUrl == null) return null;
-        return await TCGDex.GetImage(logoUrl);
-        
-    }
-
-    public string? GetSymbolUrl(Extension extension)
-    {
-        if (Symbol == null) return null;
-        return $"{Symbol}.{extension}";
-    }
-
-    public async Task<byte[]?> GetSymbol(Extension extension)
-    {
-        var symbolUrl = GetSymbolUrl(extension);
-        if (symbolUrl == null) return null;
-        return await TCGDex.GetImage(symbolUrl);
-        
-    }
-    //Both of these should potentially return full objects because the resume is already a property
-
     public async Task<Serie> GetSerie()
     {
         return await Serie.GetFullSerie();
