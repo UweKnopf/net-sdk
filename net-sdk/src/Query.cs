@@ -20,7 +20,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns><see cref="Query"/></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query Equal(string parameter, string value)
     {
         totalQueryString += $"{parameter}={value}&";
@@ -33,7 +33,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns><see cref="Query"/></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query StrictEqual(string parameter, string value)
     {
         totalQueryString += $"{parameter}=eq:{value}&";
@@ -45,7 +45,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns><see cref="Query"/></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query NotEqual(string parameter, string value)
     {
         totalQueryString += $"{parameter}=not:{value}&";
@@ -57,7 +57,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns><see cref="Query"/></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query StrictNotEqual(string parameter, string value)
     {
         totalQueryString += $"{parameter}=neq:{value}&";
@@ -69,7 +69,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query GreaterOrEqual(string parameter, string value)
     {
         totalQueryString += $"{parameter}=gte:{value}&";
@@ -82,7 +82,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query LesserOrEqual(string parameter, string value)
     {
         totalQueryString += $"{parameter}=lte:{value}&";
@@ -95,7 +95,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query Greater(string parameter, string value)
     {
         totalQueryString += $"{parameter}=gt:{value}&";
@@ -108,7 +108,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query Lesser(string parameter, string value)
     {
         totalQueryString += $"{parameter}=lt:{value}&";
@@ -118,7 +118,7 @@ public class Query
     /// Elements where <paramref name="parameter"/> is equal to null/not set.
     /// </summary>
     /// <param name="parameter"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query IsNull(string parameter)
     {
         totalQueryString += $"{parameter}=null:&";
@@ -129,7 +129,7 @@ public class Query
     /// Elements where <paramref name="parameter"/> is not null.
     /// </summary>
     /// <param name="parameter"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query IsNotNull(string parameter)
     {
         totalQueryString += $"{parameter}=notnull:&";
@@ -142,7 +142,7 @@ public class Query
     /// </summary>
     /// <param name="parameter"></param>
     /// <param name="sortOrder"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query Sort(string parameter, SortOrders sortOrder)
     {
         switch (sortOrder)
@@ -166,7 +166,7 @@ public class Query
     /// </summary>
     /// <param name="page"></param>
     /// <param name="itemsPerPage"></param>
-    /// <returns></returns>
+    /// <returns>Returns a <see cref="Query"/> instance.</returns>
     public Query Pagination(int page, int itemsPerPage)
     {
         totalQueryString += $"pagination:page={page}&pagination:itemsPerPage={itemsPerPage}";
@@ -185,6 +185,9 @@ public class Query
     }
 }
 
+/// <summary>
+/// Enum <c>SortOrders</c> is used to specify the order of the sorting in a <see cref="Query"/>.
+/// </summary>
 public enum SortOrders
 {
     Ascending,
