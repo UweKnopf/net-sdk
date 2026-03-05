@@ -48,6 +48,7 @@ public class TCGDex: ITCGDex, IDisposable
 
     /// <summary>
     /// Sets the time in minutes before a cache entry is discarded and fetched again.
+    /// Default is 30 minutes.
     /// </summary>
     /// <param name="TTLInMinutes"></param>
     public void SetCacheTTL(double TTLInMinutes)
@@ -165,7 +166,11 @@ public class TCGDex: ITCGDex, IDisposable
         
         
     }
-
+    /// <summary>
+    /// Get any asset (e.g. images, logos, symbols) of the api as bytes.
+    /// </summary>
+    /// <param name="imageUrl"></param>
+    /// <returns>byte[]?</returns>
     public byte[]? GetImage(string imageUrl)
     {
         var fileBytes = _client.DownloadData(new RestRequest(imageUrl, Method.Get));
@@ -177,139 +182,238 @@ public class TCGDex: ITCGDex, IDisposable
         _client?.Dispose();
         GC.SuppressFinalize(this);
     }
-
+    /// <summary>
+    /// Async queries a list of <see cref="CardResume"/>.
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     public async Task<List<CardResume>?> FetchCards(Query query)
     {
         var response = await FetchList<CardResume>("/cards", query);
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all <see cref="CardResume"/>
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     public async Task<List<CardResume>?> FetchCards()
     {
         var response = await FetchList<CardResume>("/cards");
         return response;
     }
 
+    /// <summary>
+    /// Async returns a <see cref="Card"/> based on its id property
+    /// </summary>
+    /// <param name="cardId"></param>
+    /// <returns></returns>
     public async Task<Card> FetchCard(string cardId)
     {
         var response = await Fetch<Card>("/cards/" + cardId);
         return response;
     }
 
+    /// <summary>
+    /// Async returns a <see cref="CardResume"/> based on its id property
+    /// </summary>
+    /// <param name="cardId"></param>
+    /// <returns></returns>
     public async Task<CardResume> FetchCardResume(string cardId)
     {
         var response = await Fetch<CardResume>("/cards/" + cardId);
         return response;
     }
 
+    /// <summary>
+    /// Async returns a <see cref="Set"/> based on its id property
+    /// </summary>
+    /// <param name="setId"></param>
+    /// <returns></returns>
     public async Task<Set> FetchSet(string setId)
     {
         var response = await Fetch<Set>("/sets/" + setId);
         return response;
     }
 
+    /// <summary>
+    /// Async queries a list of <see cref="SetResume"/>
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     public async Task<List<SetResume>> FetchSets(Query query)
     {
         var response = await FetchList<SetResume>("/sets", query);
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all <see cref="SetResume"/>
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<SetResume>> FetchSets()
     {
         var response = await FetchList<SetResume>("/sets");
         return response;
     }
 
+    /// <summary>
+    /// Async returns a <see cref="Serie"/> based on its id property
+    /// </summary>
+    /// <param name="serieId"></param>
+    /// <returns></returns>
     public async Task<Serie> FetchSerie(string serieId)
     {
         var response = await Fetch<Serie>("/series/" + serieId);
         return response;
     }
 
+    /// <summary>
+    /// Async queries a list of <see cref="Serie"/>
+    /// </summary>
+    /// <param name="query"></param>
+    /// <returns></returns>
     public async Task<List<Serie>> FetchSeries(Query query)
     {
         var response = await FetchList<Serie>("/series", query);
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all <see cref="Serie"/>
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<Serie>> FetchSeries()
     {
         var response = await FetchList<Serie>("/series");
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all types, e.g. "Fire", "Water", "Grass", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchTypes()
     {
         var response = await FetchSimpleList<string>("/types");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all retreat costs, e.g. 0, 1, 2, 3, etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<int>?> FetchRetreats()
     {
         var response = await FetchSimpleList<int>("/retreat");
         return response;
     }
-
+*/
+    /// <summary>
+    /// Async returns a list of all rarities, e.g. "Common", "Uncommon", "Rare", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchRarities()
     {
         var response = await FetchSimpleList<string>("/rarities");
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all illustrators, e.g. "Ken Sugimori", "Mitsuhiro Arita", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchIllustrators()
     {
         var response = await FetchSimpleList<string>("/illustrators");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all hp values, e.g. 60, 90, 120, etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<int>?> FetchHPs()
     {
         var response = await FetchSimpleList<int>("/hps");
         return response;
     }
-
+*/
+    /// <summary>
+    /// Async returns a list of all categories, e.g. "Pokemon", "Trainer", "Energy", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchCategories()
     {
         var response = await FetchSimpleList<string>("/categories");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all dex ids, e.g. "001", "004", "007", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchDexIDs()
     {
         var response = await FetchSimpleList<string>("/dexids");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all energy types, e.g. "Fire", "Water", "Grass", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchEnergyTypes()
     {
         var response = await FetchSimpleList<string>("/energytypes");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all regulation marks, e.g. "D", "E", "F", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchRegulationMarks()
     {
         var response = await FetchSimpleList<string>("/regulationmarks");
         return response;
     }
-
+*/
+    /// <summary>
+    /// Async returns a list of all stages, e.g. "Basic", "Stage 1", "Stage 2", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchStages()
     {
         var response = await FetchSimpleList<string>("/stages");
         return response;
     }
 
+    /// <summary>
+    /// Async returns a list of all suffixes, e.g. "V", "VMAX", "GX", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchSuffixes()
     {
         var response = await FetchSimpleList<string>("/suffixes");
         return response;
     }
-
+/*
+    /// <summary>
+    /// Async returns a list of all trainer types, e.g. "Supporter", "Item", "Stadium", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchTrainerTypes()
     {
         var response = await FetchSimpleList<string>("/trainertypes");
         return response;
     }
-
+*/
+    /// <summary>
+    /// Async returns a list of all variants, e.g. "Normal", "Reverse Holo", "Holo", etc.
+    /// </summary>
+    /// <returns></returns>
     public async Task<List<string>?> FetchVariants()
     {
         var response = await FetchSimpleList<string>("/variants");
