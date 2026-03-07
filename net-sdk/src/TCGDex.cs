@@ -17,10 +17,16 @@ public class TCGDex: IDisposable
         internal DateTime DateTime;
     }
     private readonly RestClient _client;
-    private Dictionary<string, CacheValue> cache = new Dictionary<string, CacheValue>();
+    private readonly Dictionary<string, CacheValue> cache = new Dictionary<string, CacheValue>();
     private double TTL = 30;
 
-    public TCGDex(string language)
+    /// <summary>
+    /// Initializes a new instance of the TCGDex class with the specified language. The language parameter determines the language of the data returned by the API. 
+    /// Supported languages are for example "en" (English), "de" (German) or "fr" (French). 
+    /// If no language is specified, it defaults to English ("en").
+    /// </summary>
+    /// <param name="language"></param>
+    public TCGDex(string language = "en")
     {
         var options = new RestClientOptions($"https://api.tcgdex.net/v2/{language}");
         _client = new RestClient(options);
