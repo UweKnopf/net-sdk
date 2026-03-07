@@ -7,17 +7,8 @@ using RestSharp;
 
 namespace net_sdk.src;
 
-public interface ITCGDex
-{
-    Task<Card> FetchCard(string cardId);
-    Task<CardResume> FetchCardResume(string cardId);
-    Task<Set> FetchSet(string setId);
-    Task<Serie> FetchSerie(string serieId);
-}
 
-
-
-public class TCGDex: ITCGDex, IDisposable
+public class TCGDex: IDisposable
 {
 
     internal struct CacheValue
@@ -250,16 +241,6 @@ public class TCGDex: ITCGDex, IDisposable
         return response;
     }
 
-    /// <summary>
-    /// Async returns a <see cref="CardResume"/> based on its id property.
-    /// </summary>
-    /// <param name="cardId"></param>
-    /// <returns></returns>
-    public async Task<CardResume> FetchCardResume(string cardId)
-    {
-        var response = await Fetch<CardResume>("/cards/" + cardId);
-        return response;
-    }
 
     /// <summary>
     /// Async returns a <see cref="Set"/> based on its id property.
