@@ -117,6 +117,22 @@ public class TCGDexTest
     }
 
     [TestMethod]
+    public async Task FetchCards_InlineSortAndNameQuery_CardsWithPickachuSortedBasedOnHpAceAsResumes()
+    {
+        var sdk = createTCGDexEN();
+        
+
+        var pickachuSorted = await sdk.FetchCards(new Query().Equal("name", "pikachu").Sort("hp", SortOrders.Ascending));
+
+        var first = await pickachuSorted[0].GetFullCard();
+        var second = await pickachuSorted[1].GetFullCard();
+
+        Assert.IsNotNull(pickachuSorted);
+        Assert.IsNotEmpty(pickachuSorted);
+        Assert.IsGreaterThanOrEqualTo((int)first.Hp, (int)second.Hp);
+    }
+
+    [TestMethod]
     public async Task FetchCards_SortAndNameQueryUsingCache_CardsWithPickachuSortedBasedOnHpAceAsResumes()
     {
         var sdk = createTCGDexEN();
