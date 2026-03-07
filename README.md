@@ -16,14 +16,17 @@ dotnet add package TCGDexSDK
 ### Usage
 
 The main way to interact with the sdk is threw a <code>TCGDex</code> Object:
+
 ```csharp
 // Supply a language code like in this case "en" for english for the sdk to return cards of that specified language
 sdk = new TCGDex("en");
+
 // Async fetch card based on id (in this case furret from the Darkness Ablaze Set)
 var card = await sdk.FetchCard('swsh3-136');
 ```
 
 You can also fetch sets and series based on id like this:
+
 ```csharp
 var set = await sdk.FetchSet('swsh3');
 var serie = await sdk.FetchSerie('swsh');
