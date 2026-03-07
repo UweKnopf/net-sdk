@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>net_sdk</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -9,15 +9,18 @@
     <Version>1.0.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Authors>Uwe Knopf</Authors>
+    <Summary>TCGDex SDK for .NET</Summary>
     <Description>TCGDex SDK for .NET</Description>
     <PackageTags>TCGDex, SDK, .NET, Pokomon</PackageTags>
     <RepositoryUrl>https://github.com/UweKnopf/TCGDexNetSDK</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="src/" />
     <Folder Include="src/models/" />
     <Folder Include="src/models/subs/" />
+    <None Include="../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <ItemGroup>
