@@ -67,7 +67,8 @@ public class TCGDex: ITCGDex, IDisposable
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<T>(req);
 
-        response.TCGDex = this;
+        //Should not be null because GetAsync would throw
+        response!.TCGDex = this;
         //there must be a better way
         PropertyInfo[] properties = typeof(T).GetProperties();
         foreach (PropertyInfo property in properties)
@@ -174,7 +175,8 @@ public class TCGDex: ITCGDex, IDisposable
 
             cache[fetchParam] = new CacheValue
             {
-                Data = response,
+                //cant be null because GetAsync would throw before that
+                Data = response!,
                 DateTime = DateTime.Now
             };
             return response;
@@ -211,7 +213,7 @@ public class TCGDex: ITCGDex, IDisposable
     /// </summary>
     public void Dispose()
     {
-        _client?.Dispose();
+        _client.Dispose();
         GC.SuppressFinalize(this);
     }
 

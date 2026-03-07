@@ -59,7 +59,7 @@ public record class SetResume(
     /// Async returns a <see cref="Set"/> of the SetResume.
     /// </summary>
     /// <returns>Returns the full set as a <see cref="Set"/>.</returns>
-    public async Task<Set?> GetFullSet()
+    public async Task<Set> GetFullSet()
     {
         return await TCGDex.FetchSet(Id);
     }

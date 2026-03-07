@@ -35,7 +35,7 @@ public record class SerieResume(
     /// Async returns a <see cref="Serie"/> of the SerieResume.
     /// </summary>
     /// <returns></returns>
-    public async Task<Serie?> GetFullSerie()
+    public async Task<Serie> GetFullSerie()
     {
         return await TCGDex.FetchSerie(Id);
     }
