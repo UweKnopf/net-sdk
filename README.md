@@ -10,24 +10,25 @@ This is an unofficial .net sdk for the TCGDex api. It is heavily inspired by the
 
 Like any other package with the dotnet cli:
 
-<code>dotnet add package TCGDexSDK
+<code>
+dotnet add package TCGDexSDK
 </code>
 
 ### Usage
 
 The main way to interact with the sdk is threw a <code>TCGDex</code> Object:
 
-<code>// Supply a language code like in this case "en" for english for the sdk to return cards of that specified language
+<code>
+// Supply a language code like in this case "en" for english for the sdk to return cards of that specified language
 sdk = new TCGDex("en");
-
 // Async fetch card based on id (in this case furret from the Darkness Ablaze Set)
 var card = await sdk.FetchCard('swsh3-136');
 </code>
 
 You can also fetch sets and series based on id like this:
 
-<code>var set = await sdk.FetchSet('swsh3');
-
+<code>
+var set = await sdk.FetchSet('swsh3');
 var serie = await sdk.FetchSerie('swsh');
 </code>
 
@@ -35,7 +36,8 @@ var serie = await sdk.FetchSerie('swsh');
 
 If you want to get multiple cards based on some parameters, perhaps even sorted or with pagination, you can use our query system:
 
-<code>// Fetches all cards if they have more than 100 hp and sorts the results in descending order based on hp
+<code>
+// Fetches all cards if they have more than 100 hp and sorts the results in descending order based on hp
 var tanks = await sdk.FetchCards(new Query.Greater("hp", 100).Sort("hp", SortOrder.Descending));
 </code>
 
