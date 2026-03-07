@@ -151,7 +151,7 @@ public class TCGDex: IDisposable
         return response;
     }
 
-    private async Task<List<T>?> FetchSimpleList<T>(string fetchParam)
+    private async Task<List<T>> FetchSimpleList<T>(string fetchParam)
     {
         var cachedData = CacheLookUp(fetchParam);
         if (cachedData != null)
@@ -166,32 +166,17 @@ public class TCGDex: IDisposable
 
         In that case the error thrown from restsharp would be more meaningful or, if none is thrown, we could do it ourself
         */
-        try
-        {
-            var response = await _client.GetAsync<List<T>>(req);
+        
+        var response = await _client.GetAsync<List<T>>(req);
 
-            cache[fetchParam] = new CacheValue
-            {
-                //cant be null because GetAsync would throw before that
-                Data = response!,
-                DateTime = DateTime.Now
-            };
-            return response;
-        }
-        catch (System.Exception)
+        cache[fetchParam] = new CacheValue
         {
-            if (_client.Execute(req).StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new WebException("The resource you are trying to reach does not exists");
-            }
-            else
-            {
-                throw;
-            }
-            
-        }
-        
-        
+            //cant be null because GetAsync would throw before that
+            Data = response!,
+            DateTime = DateTime.Now
+        };
+
+        return response!;
     }
 
     /// <summary>
@@ -316,7 +301,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all types, e.g. "Fire", "Water", "Grass", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchTypes()
+    public async Task<List<string>> FetchTypes()
     {
         var response = await FetchSimpleList<string>("/types");
         return response;
@@ -326,7 +311,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all rarities, e.g. "Common", "Uncommon", "Rare", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchRarities()
+    public async Task<List<string>> FetchRarities()
     {
         var response = await FetchSimpleList<string>("/rarities");
         return response;
@@ -336,7 +321,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all illustrators, e.g. "Ken Sugimori", "Mitsuhiro Arita", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchIllustrators()
+    public async Task<List<string>> FetchIllustrators()
     {
         var response = await FetchSimpleList<string>("/illustrators");
         return response;
@@ -346,7 +331,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all categories, e.g. "Pokemon", "Trainer", "Energy", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchCategories()
+    public async Task<List<string>> FetchCategories()
     {
         var response = await FetchSimpleList<string>("/categories");
         return response;
@@ -356,7 +341,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all stages, e.g. "Basic", "Stage 1", "Stage 2", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchStages()
+    public async Task<List<string>> FetchStages()
     {
         var response = await FetchSimpleList<string>("/stages");
         return response;
@@ -366,7 +351,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all suffixes, e.g. "V", "VMAX", "GX", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchSuffixes()
+    public async Task<List<string>> FetchSuffixes()
     {
         var response = await FetchSimpleList<string>("/suffixes");
         return response;
@@ -376,7 +361,7 @@ public class TCGDex: IDisposable
     /// Async returns a list of all variants, e.g. "Normal", "Reverse Holo", "Holo", etc.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<string>?> FetchVariants()
+    public async Task<List<string>> FetchVariants()
     {
         var response = await FetchSimpleList<string>("/variants");
         return response;

@@ -16,8 +16,9 @@ public record class CardResume(
     /// <param name="quality"></param>
     /// <param name="extension"></param>
     /// <returns></returns>
-    public string GetImageUrl(Quality quality, Extension extension)
+    public string? GetImageUrl(Quality quality, Extension extension)
     {
+        if (Image == null) return null;
         return $"{Image}/{quality}.{extension}";
     }
     /// <summary>
@@ -28,13 +29,15 @@ public record class CardResume(
     /// <returns></returns>
     public async Task<byte[]?> GetImage(Quality quality, Extension extension)
     {
-        return await TCGDex.GetImage(GetImageUrl(quality, extension));
+        var imageUrl = GetImageUrl(quality, extension);
+        if (imageUrl == null) return null;
+        return await TCGDex.GetImage(imageUrl);
     }
     /// <summary>
     /// Async returns a <see cref="Card"/> of the CardResume.
     /// </summary>
     /// <returns></returns>
-    public async Task<Card?> GetFullCard()
+    public async Task<Card> GetFullCard()
     {
         return await TCGDex.FetchCard(Id);
     }

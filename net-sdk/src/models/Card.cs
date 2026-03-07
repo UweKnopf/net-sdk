@@ -41,8 +41,9 @@ public record class Card(
     /// <param name="quality"></param>
     /// <param name="extension"></param>
     /// <returns></returns>
-    public string GetImageUrl(Quality quality, Extension extension)
+    public string? GetImageUrl(Quality quality, Extension extension)
     {
+        if (Image == null) return null;
         return $"{Image}/{quality}.{extension}";
     }
     /// <summary>
@@ -53,23 +54,29 @@ public record class Card(
     /// <returns></returns>
     public async Task<byte[]?> GetImage(Quality quality, Extension extension)
     {
-        return await TCGDex.GetImage(GetImageUrl(quality, extension));
+        var imageUrl = GetImageUrl(quality, extension);
+        if (imageUrl == null) return null;
+        return await TCGDex.GetImage(imageUrl);
     }
     /// <summary>
     /// Async returns the <see cref="Set"/> of the Card.
     /// </summary>
     /// <returns></returns>
-    public async Task<Set> GetSet()
+    public async Task<Set?> GetSet()
     {
+        if (Set == null)
+            return null;
         return await Set.GetFullSet();
     }
     /// <summary>
     /// Async returns the <see cref="Serie"/> of the Card.
     /// </summary>
     /// <returns></returns>
-    public async Task<Serie> GetSerie()
+    public async Task<Serie?> GetSerie()
     {
         var set = await GetSet(); 
+        if (set == null)
+            return null;
         return await set.GetSerie();
     }
 }

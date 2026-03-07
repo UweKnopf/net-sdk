@@ -117,6 +117,20 @@ public class TCGDexTest
     }
 
     [TestMethod]
+    public async Task FetchCards_WrongQuery_EmptyList()
+    {
+        var sdk = createTCGDexEN();
+
+
+        var query = new Query().Equal("name", "WRONGNAMETHATDOSNTEXIST").Sort("hp", SortOrders.Ascending);
+
+        var nothingSorted = await sdk.FetchCards(query);
+
+        Assert.IsNotNull(nothingSorted);
+        Assert.IsEmpty(nothingSorted);
+    }
+
+    [TestMethod]
     public async Task FetchCards_InlineSortAndNameQuery_CardsWithPickachuSortedBasedOnHpAceAsResumes()
     {
         var sdk = createTCGDexEN();

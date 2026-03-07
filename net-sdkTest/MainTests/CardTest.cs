@@ -14,6 +14,12 @@ public class CardTest
         return await sdk.FetchCard("swsh3-136");
     }
 
+    private async Task<Card> GetWrongTestCardEN()
+    {
+        var sdk = new TCGDex("en");
+        return await sdk.FetchCard("BADCARDID");
+    }
+
     [TestMethod]
     public async Task GetImageUrl_ImageUrlExistsForLowAndPng_ImageUrlString()
     {
@@ -29,7 +35,7 @@ public class CardTest
         var card = await GetTestCardEN();
         
 
-        Assert.IsNotNull(card.GetImage(Quality.low, Extension.png));
+        Assert.IsNotNull(await card.GetImage(Quality.low, Extension.png));
     }
 
     [TestMethod]
@@ -65,5 +71,25 @@ public class CardTest
         
 
         Assert.IsNotNull(fullSet);
+    }
+
+    [TestMethod]
+    public async Task GetImage_CardDoesntExist_ImageIsNull()
+    {
+        var card = await GetWrongTestCardEN();
+        
+        var image = await card.GetImage(Quality.low, Extension.png);
+        Assert.IsNull(image);
+    }
+
+    [TestMethod]
+    public async Task GetSerie_CardAndSerieDosntExist_SerieIsNull()
+    {
+        var card = await GetWrongTestCardEN();
+
+        var serie = await card.GetSerie();
+        
+
+        Assert.IsNull(serie);
     }
 }

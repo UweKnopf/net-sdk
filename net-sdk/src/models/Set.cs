@@ -61,8 +61,10 @@ public record class Set(
         return await TCGDex.GetImage(symbolUrl);
         
     }
-    public async Task<Serie> GetSerie()
+    public async Task<Serie?> GetSerie()
     {
+        if (Serie == null)
+            return null;
         return await Serie.GetFullSerie();
     }
     //what if caller wants to use the card field directly?
