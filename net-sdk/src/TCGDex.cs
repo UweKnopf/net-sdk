@@ -36,7 +36,7 @@ public class TCGDex: ITCGDex, IDisposable
         _client.AddDefaultHeader("user-agent", "@UweKnopf/net-sdk");
     }
 
-    private object? cacheLookUp(string relativePath)
+    private object? CacheLookUp(string relativePath)
     {
         if (cache.TryGetValue(relativePath, out CacheValue value) && DateTime.Now.Subtract(value.DateTime).TotalMinutes < TTL)
         {
@@ -58,13 +58,16 @@ public class TCGDex: ITCGDex, IDisposable
 
     private async Task<T> Fetch<T>(string fetchParam) where T : Model
     {
-        if (cacheLookUp(fetchParam) != null)
+        var cachedData = CacheLookUp(fetchParam);
+        if (cachedData != null)
         {
-            return (T)cacheLookUp(fetchParam);
+            return (T)cachedData;
         }
+
         var req = new RestRequest(fetchParam);
         var response = await _client.GetAsync<T>(req);
-        response!.TCGDex = this;
+
+        response.TCGDex = this;
         //there must be a better way
         PropertyInfo[] properties = typeof(T).GetProperties();
         foreach (PropertyInfo property in properties)
@@ -89,19 +92,24 @@ public class TCGDex: ITCGDex, IDisposable
             }
             
         }
-        CacheValue cacheValue = new CacheValue();
-        cacheValue.Data = response;
-        cacheValue.DateTime = DateTime.Now;
-        cache[fetchParam] = cacheValue;
+
+        cache[fetchParam] = new CacheValue
+        {
+            Data = response,
+            DateTime = DateTime.Now
+        };
+
         return response;
     }
 
     private async Task<List<T>> FetchList<T>(string fetchParam) where T : Model
     {
-        if (cacheLookUp(fetchParam) != null)
+        var cachedData = CacheLookUp(fetchParam);
+        if (cachedData != null)
         {
-            return (List<T>)cacheLookUp(fetchParam);
+            return (List<T>)cachedData;
         }
+        
         RestRequest req = new RestRequest(fetchParam);
         
         var response = await _client.GetAsync<List<T>>(req);
@@ -109,36 +117,50 @@ public class TCGDex: ITCGDex, IDisposable
         {
             card.TCGDex = this;
         }
-        CacheValue cacheValue = new CacheValue();
-        cacheValue.Data = response;
-        cacheValue.DateTime = DateTime.Now;
-        cache[fetchParam] = cacheValue;
+
+        cache[fetchParam] = new CacheValue
+        {
+            Data = response,
+            DateTime = DateTime.Now
+        };
+
         return response;
     }
 
     private async Task<List<T>> FetchList<T>(string fetchParam, Query query) where T : Model
     {
         var combinedRequestURL = query.ReturnRequestStringWithAllQueries(fetchParam);
-        if (cacheLookUp(combinedRequestURL) != null)
+        var cachedData = CacheLookUp(combinedRequestURL);
+        if (cachedData != null)
         {
-            return (List<T>)cacheLookUp(combinedRequestURL);
+            return (List<T>)cachedData;
         }
+
         RestRequest req = new RestRequest(combinedRequestURL);
         
         var response = await _client.GetAsync<List<T>>(req);
-        foreach (var card in response!)
+        foreach (var element in response!)
         {
-            card.TCGDex = this;
+            element.TCGDex = this;
         }
-        CacheValue cacheValue = new CacheValue();
-        cacheValue.Data = response;
-        cacheValue.DateTime = DateTime.Now;
-        cache[combinedRequestURL] = cacheValue;
+
+        cache[combinedRequestURL] = new CacheValue
+        {
+            Data = response,
+            DateTime = DateTime.Now
+        };
+
         return response;
     }
 
     private async Task<List<T>?> FetchSimpleList<T>(string fetchParam)
     {
+        var cachedData = CacheLookUp(fetchParam);
+        if (cachedData != null)
+        {
+            return (List<T>)cachedData;
+        }
+
         var req = new RestRequest(fetchParam);
         /*
         This is probably not the way to do this but we first need to think about what (if any) errors we want to return to caller.
@@ -149,6 +171,12 @@ public class TCGDex: ITCGDex, IDisposable
         try
         {
             var response = await _client.GetAsync<List<T>>(req);
+
+            cache[fetchParam] = new CacheValue
+            {
+                Data = response,
+                DateTime = DateTime.Now
+            };
             return response;
         }
         catch (System.Exception)
@@ -166,11 +194,12 @@ public class TCGDex: ITCGDex, IDisposable
         
         
     }
+
     /// <summary>
     /// Get any asset (e.g. images, logos, symbols) of the api as bytes.
     /// </summary>
     /// <param name="imageUrl"></param>
-    /// <returns>byte[]?</returns>
+    /// <returns>A byte array containing the image data.</returns>
     public async Task<byte[]?> GetImage(string imageUrl)
     {
         var fileBytes = await _client.DownloadDataAsync(new RestRequest(imageUrl, Method.Get));
@@ -185,6 +214,7 @@ public class TCGDex: ITCGDex, IDisposable
         _client?.Dispose();
         GC.SuppressFinalize(this);
     }
+
     /// <summary>
     /// Async queries a list of <see cref="CardResume"/>.
     /// </summary>
@@ -302,17 +332,7 @@ public class TCGDex: ITCGDex, IDisposable
         var response = await FetchSimpleList<string>("/types");
         return response;
     }
-/*
-    /// <summary>
-    /// Async returns a list of all retreat costs, e.g. 0, 1, 2, 3, etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<int>?> FetchRetreats()
-    {
-        var response = await FetchSimpleList<int>("/retreat");
-        return response;
-    }
-*/
+
     /// <summary>
     /// Async returns a list of all rarities, e.g. "Common", "Uncommon", "Rare", etc.
     /// </summary>
@@ -332,17 +352,7 @@ public class TCGDex: ITCGDex, IDisposable
         var response = await FetchSimpleList<string>("/illustrators");
         return response;
     }
-/*
-    /// <summary>
-    /// Async returns a list of all hp values, e.g. 60, 90, 120, etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<int>?> FetchHPs()
-    {
-        var response = await FetchSimpleList<int>("/hps");
-        return response;
-    }
-*/
+
     /// <summary>
     /// Async returns a list of all categories, e.g. "Pokemon", "Trainer", "Energy", etc.
     /// </summary>
@@ -352,37 +362,7 @@ public class TCGDex: ITCGDex, IDisposable
         var response = await FetchSimpleList<string>("/categories");
         return response;
     }
-/*
-    /// <summary>
-    /// Async returns a list of all dex ids, e.g. "001", "004", "007", etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<string>?> FetchDexIDs()
-    {
-        var response = await FetchSimpleList<string>("/dexids");
-        return response;
-    }
-/*
-    /// <summary>
-    /// Async returns a list of all energy types, e.g. "Fire", "Water", "Grass", etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<string>?> FetchEnergyTypes()
-    {
-        var response = await FetchSimpleList<string>("/energytypes");
-        return response;
-    }
-/*
-    /// <summary>
-    /// Async returns a list of all regulation marks, e.g. "D", "E", "F", etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<string>?> FetchRegulationMarks()
-    {
-        var response = await FetchSimpleList<string>("/regulationmarks");
-        return response;
-    }
-*/
+
     /// <summary>
     /// Async returns a list of all stages, e.g. "Basic", "Stage 1", "Stage 2", etc.
     /// </summary>
@@ -402,17 +382,7 @@ public class TCGDex: ITCGDex, IDisposable
         var response = await FetchSimpleList<string>("/suffixes");
         return response;
     }
-/*
-    /// <summary>
-    /// Async returns a list of all trainer types, e.g. "Supporter", "Item", "Stadium", etc.
-    /// </summary>
-    /// <returns></returns>
-    public async Task<List<string>?> FetchTrainerTypes()
-    {
-        var response = await FetchSimpleList<string>("/trainertypes");
-        return response;
-    }
-*/
+
     /// <summary>
     /// Async returns a list of all variants, e.g. "Normal", "Reverse Holo", "Holo", etc.
     /// </summary>
