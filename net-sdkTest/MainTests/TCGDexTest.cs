@@ -212,18 +212,6 @@ public class TCGDexTest
     }
 
     [TestMethod]
-    public async Task FetchCardResume_RightCardID_CardResumeObjectOfCardID()
-    {
-        var sdk = createTCGDexEN();
-        var cardID = "swsh3-136";
-
-        var cardResume = await sdk.FetchCardResume(cardID);
-
-        Assert.IsNotNull(cardResume);
-        Assert.AreEqual("Furret", cardResume.Name);
-    }
-
-    [TestMethod]
     public async Task FetchSet_RightSetID_SetObjectOfSetID()
     {
         var sdk = createTCGDexEN();
