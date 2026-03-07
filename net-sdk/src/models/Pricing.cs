@@ -6,7 +6,7 @@ namespace net_sdk.src.models;
 public record class Pricing(
     PricingTcgPlayer? Tcgplayer,
     PricingCardMarket? Cardmarket
-) : Model()
+)
 {
 
 }
