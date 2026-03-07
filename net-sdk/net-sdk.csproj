@@ -1,14 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>net_sdk</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>TCGDexSDK</PackageId>
     <Version>1.0.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    
+    <Authors>Uwe Knopf</Authors>
+    <Description>TCGDex SDK for .NET</Description>
+    <PackageTags>TCGDex, SDK, .NET, Pokomon</PackageTags>
+    <RepositoryUrl>https://github.com/UweKnopf/TCGDexNetSDK</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
