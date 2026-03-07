@@ -8,7 +8,7 @@ public record class SetResume(
     string? Name,
     string? Logo,
     string? Symbol,
-    SetCardCount CardCount
+    SetCardCountResume CardCount
 ) : Model()
 {
     /// <summary>

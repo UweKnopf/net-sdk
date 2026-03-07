@@ -7,10 +7,17 @@ namespace net_sdkTest.MainTests;
 public class SetTest
 {
 
-    private async Task<Set> GetTestSetEN()
+    private static async Task<Set> GetTestSetEN()
     {
         var sdk = new TCGDex("en");
         return await sdk.FetchSet("swsh3");
+    }
+
+    private static async Task<SetResume> GetTestSetResumeEN()
+    {
+        var sdk = new TCGDex("en");
+        var setResumeList = await sdk.FetchSets(new Query().Equal("id", "swsh3"));
+        return setResumeList[0];
     }
     [TestMethod]
     public async Task GetLogoUrl_LogoUrlExistsForPng_LogoUrlString()
@@ -52,7 +59,7 @@ public class SetTest
         var serie = await set.GetSerie();
         
 
-        Assert.AreEqual("swsh", serie.Id);
+        Assert.AreEqual("swsh", serie!.Id);
     }
 
     [TestMethod]
@@ -91,5 +98,35 @@ public class SetTest
         
 
         Assert.IsNotNull(card);
+    }
+
+    [TestMethod]
+    public async Task UseFieldSetCardCount_CardCountFieldExists_FullCardCountObject()
+    {
+        var set = await GetTestSetEN();
+
+        var setCardCount = set.CardCount;
+        
+
+        Assert.IsNotNull(setCardCount);
+        Assert.IsNotNull(setCardCount.FirstEd);
+        Assert.IsNotNull(setCardCount.Holo);
+        Assert.IsNotNull(setCardCount.Normal);
+        Assert.IsNotNull(setCardCount.Reverse);
+        Assert.IsNotNull(setCardCount.Total);
+        Console.WriteLine(setCardCount);
+    }
+
+    [TestMethod]
+    public async Task UseFieldSetResumeCardCountResume_CardCountResumeFieldExists_FullCardCountResumeObject()
+    {
+        var set = await GetTestSetResumeEN();
+
+        var setCardCountResume = set.CardCount;
+        
+        Console.WriteLine(setCardCountResume);
+        Assert.IsNotNull(setCardCountResume);
+        Assert.IsNotNull(setCardCountResume.Total);
+        
     }
 }
