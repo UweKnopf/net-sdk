@@ -56,7 +56,7 @@ public class SetTest
     {
         var set = await GetTestSetEN();
 
-        var serie = await set.GetSerie();
+        var serie = await set.GetFullSerie();
         
 
         Assert.AreEqual("swsh", serie!.Id);

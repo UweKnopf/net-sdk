@@ -62,7 +62,7 @@ public record class Card(
     /// Async returns the full <see cref="Set"/> of the Card.
     /// </summary>
     /// <returns></returns>
-    public async Task<Set?> GetSet()
+    public async Task<Set?> GetFullSet()
     {
         if (Set == null)
             return null;
@@ -72,11 +72,11 @@ public record class Card(
     /// Async returns the full <see cref="Serie"/> of the Card.
     /// </summary>
     /// <returns></returns>
-    public async Task<Serie?> GetSerie()
+    public async Task<Serie?> GetFullSerie()
     {
-        var set = await GetSet(); 
+        var set = await GetFullSet(); 
         if (set == null)
             return null;
-        return await set.GetSerie();
+        return await set.GetFullSerie();
     }
 }

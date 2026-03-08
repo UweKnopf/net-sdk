@@ -65,7 +65,7 @@ public record class Set(
     /// Async returns the full <see cref="Serie"/> of the Set.
     /// </summary>
     /// <returns></returns>
-    public async Task<Serie?> GetSerie()
+    public async Task<Serie?> GetFullSerie()
     {
         if (Serie == null)
             return null;

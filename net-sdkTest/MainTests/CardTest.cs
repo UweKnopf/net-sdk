@@ -43,7 +43,7 @@ public class CardTest
     {
         var card = await GetTestCardEN();
 
-        var set = await card.GetSet();
+        var set = await card.GetFullSet();
         
 
         Assert.AreEqual("swsh3", set.Id);
@@ -54,7 +54,7 @@ public class CardTest
     {
         var card = await GetTestCardEN();
 
-        var serie = await card.GetSerie();
+        var serie = await card.GetFullSerie();
         
 
         Assert.AreEqual("swsh", serie.Id);
@@ -87,7 +87,7 @@ public class CardTest
     {
         var card = await GetWrongTestCardEN();
 
-        var serie = await card.GetSerie();
+        var serie = await card.GetFullSerie();
         
 
         Assert.IsNull(serie);
