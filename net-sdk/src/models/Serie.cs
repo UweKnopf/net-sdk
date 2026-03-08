@@ -32,4 +32,22 @@ public record class Serie(
         return await TCGDex.GetImage(logoUrl);
         
     }
+    /// <summary>
+    /// Async returns a list of all cards in the serie as <see cref="CardResume"/> objects.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<CardResume>?> GetCards()
+    {
+        var cards = await TCGDex.FetchCards(new Query().Equal("id", Id));
+        return cards;
+    }
+    /// <summary>
+    /// Returns the total card count of the serie. If the serie has no sets, null is returned.
+    /// </summary>
+    /// <returns></returns>
+    public int? GetTotalCardCount()
+    {
+        if (Sets == null) return null;
+        return Sets.Sum(s => s.CardCount.Total);
+    }
 }

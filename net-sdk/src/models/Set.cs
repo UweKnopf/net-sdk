@@ -61,15 +61,14 @@ public record class Set(
         return await TCGDex.GetImage(symbolUrl);
         
     }
+    /// <summary>
+    /// Async returns the full <see cref="Serie"/> of the Set.
+    /// </summary>
+    /// <returns></returns>
     public async Task<Serie?> GetSerie()
     {
         if (Serie == null)
             return null;
         return await Serie.GetFullSerie();
-    }
-    //what if caller wants to use the card field directly?
-    public List<CardResume> GetCards()
-    {
-        return Cards;
     }
 }

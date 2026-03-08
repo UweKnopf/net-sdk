@@ -39,4 +39,25 @@ public class SerieTest
         
         Assert.IsNotNull(set);
     }
+
+    [TestMethod]
+    public async Task GetCards_SetsExistAndHasSeriesWithCards_AListOfAllCardResumesInTheSerie()
+    {
+        var Serie = await GetTestSerieEN();
+
+        var cards = await Serie.GetCards();
+
+        Assert.IsNotNull(cards);
+    }
+
+    [TestMethod]
+    public async Task GetTotalCardCount_SetsExistAndHasSeriesWithCards_TotalCardCount()
+    {
+        var Serie = await GetTestSerieEN();
+
+        var totalCardCount = Serie.GetTotalCardCount();
+
+        Assert.IsNotNull(totalCardCount);
+        Assert.IsGreaterThan((int)totalCardCount, 4000);
+    }
 }

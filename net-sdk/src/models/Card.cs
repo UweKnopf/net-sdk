@@ -36,7 +36,7 @@ public record class Card(
     ) : Model()
 {
     /// <summary>
-    /// Returns the URL of the card image with the specified quality and extension.
+    /// Returns the URL (relative to the API base URL) of the card image with the specified quality and extension.
     /// </summary>
     /// <param name="quality"></param>
     /// <param name="extension"></param>
@@ -59,7 +59,7 @@ public record class Card(
         return await TCGDex.GetImage(imageUrl);
     }
     /// <summary>
-    /// Async returns the <see cref="Set"/> of the Card.
+    /// Async returns the full <see cref="Set"/> of the Card.
     /// </summary>
     /// <returns></returns>
     public async Task<Set?> GetSet()
@@ -69,7 +69,7 @@ public record class Card(
         return await Set.GetFullSet();
     }
     /// <summary>
-    /// Async returns the <see cref="Serie"/> of the Card.
+    /// Async returns the full <see cref="Serie"/> of the Card.
     /// </summary>
     /// <returns></returns>
     public async Task<Serie?> GetSerie()
